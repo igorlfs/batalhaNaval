@@ -15,6 +15,7 @@ public:
   bool getDirection() const { return this->direction; }
 
   void setDirection(const char &direction);
+  void setDirection(const bool &direction);
   void setPosition(const std::pair<int, int> &position);
 
   std::vector<std::pair<int, int>> getPosition() const;

@@ -1,19 +1,13 @@
-#ifndef HUMAN_PLAYER_H
-#define HUMAN_PLAYER_H
+#ifndef COMPUTER_PLAYER_H
+#define COMPUTER_PLAYER_H
 #include "player.hpp"
 namespace players {
-class human : public player {
+class computer : public player {
 public:
-  human();
+  computer();
 
 private:
-  void printBoard() const;
-  void printHeader() const;
-  void printSeparator() const;
-
-  void clearShip(ships::ship *ship);
-
-  char chooseDirection(const ships::ship &ship) const;
+  bool chooseDirection() const;
   std::pair<int, int> choosePosition(const ships::ship &ship) const override;
   bool isOutOfBounds(const ships::ship &ship,
                      const std::pair<int, int> &pos) const override;

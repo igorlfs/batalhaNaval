@@ -106,10 +106,10 @@ bool human::isOverlaping(const ships::ship &ship,
 }
 std::pair<int, int> human::choosePosition(const ships::ship &ship) const {
   std::cout << "Escolha a posição do '" << ship.getName() << "': ";
-  std::pair<int, int> pos;
+  std::pair<int, int> position;
   do {
-    std::cin >> pos.first >> pos.second;
-  } while (this->isOutOfBounds(ship, pos) == true ||
-           this->isOverlaping(ship, pos) == true);
-  return pos;
+    std::cin >> position.first >> position.second;
+  } while (this->isOutOfBounds(ship, position) == true ||
+           this->isOverlaping(ship, position) == true);
+  return position;
 }

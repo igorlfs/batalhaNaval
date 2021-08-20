@@ -20,7 +20,6 @@ private:
   virtual bool isOverlaping(const ships::ship &ship,
                             const std::pair<int, int> &pos) const = 0;
   virtual std::pair<int, int> choosePosition(const ships::ship &ship) const = 0;
-  virtual char chooseDirection(const ships::ship &ship) const = 0;
 
 protected:
   static constexpr int ROWS = 6;

@@ -2,9 +2,8 @@
 #define CARRIER_H
 #include "ship.hpp"
 namespace ships {
+static constexpr int CARRIER_SIZE = 5;
 class carrier : public ship {
-  static constexpr int CARRIER_SIZE = 5;
-
 public:
   carrier() : ship(CARRIER_SIZE, "carrier"){};
 };
