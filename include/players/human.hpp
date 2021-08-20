@@ -1,3 +1,5 @@
+#ifndef HUMAN_PLAYER_H
+#define HUMAN_PLAYER_H
 #include "player.hpp"
 namespace players {
 class human : public player {
@@ -19,3 +21,4 @@ private:
   char chooseDirection(const ships::ship &ship) const override;
 };
 } // namespace players
+#endif
