@@ -25,6 +25,8 @@ private:
 protected:
   static constexpr int ROWS = 6;
   static constexpr int COLS = 6;
+  static constexpr int TILES = ROWS * COLS;
+  static constexpr double MAX_OCCUPABLE = 0.8;
 
   static constexpr int TOTAL_SHIPS = 6;
 
@@ -39,6 +41,8 @@ protected:
 
   void initializeBoard();
   void initializeShips();
+
+  bool isThereEnoughSpace();
 
   void addShipToBoard(ships::ship &ship);
 
