@@ -8,7 +8,7 @@ human::human() {
   restartPosition:
     this->printBoard();
     this->ships[i]->setDirection(chooseDirection(*this->ships[i]));
-    this->ships[i]->setPosition(choosePosition(*this->ships[i]));
+    this->ships[i]->setCells(choosePosition(*this->ships[i]));
     this->addShipToBoard(*this->ships[i]);
     this->printBoard();
     std::cout << "Você está feliz com a posição atual do barco? (S/n)\n"
@@ -74,11 +74,11 @@ readDirection:
   return direc;
 }
 void human::clearShip(ships::ship *ship) {
-  std::vector<std::pair<int, int>> shipPos = ship->getPosition();
+  std::vector<std::pair<int, int>> shipPos = ship->getLocation();
   for (unsigned k = 0; k < shipPos.size(); ++k) {
     this->board[shipPos[k].first][shipPos[k].second] = EMPTY;
   }
-  ship->clearLocation();
+  ship->clearCells();
 }
 bool human::isOutOfBounds(const ships::ship &ship,
                           const std::pair<int, int> &pos) const {
@@ -92,8 +92,8 @@ bool human::isOutOfBounds(const ships::ship &ship,
 bool human::isOverlaping(const ships::ship &ship,
                          const std::pair<int, int> &pos) const {
   ships::ship testShip = ship;
-  testShip.setPosition(pos);
-  std::vector<std::pair<int, int>> positionCandidate = testShip.getPosition();
+  testShip.setCells(pos);
+  std::vector<std::pair<int, int>> positionCandidate = testShip.getLocation();
   for (unsigned k = 0; k < positionCandidate.size(); ++k) {
     if (this->board[positionCandidate[k].first][positionCandidate[k].second] !=
         EMPTY) {

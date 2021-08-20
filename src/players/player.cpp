@@ -10,7 +10,7 @@ void player::initializeBoard() {
   }
 }
 void player::addShipToBoard(ships::ship &ship) {
-  std::vector<std::pair<int, int>> shipPos = ship.getPosition();
+  std::vector<std::pair<int, int>> shipPos = ship.getLocation();
   char shipName = ship.getName()[0];
   for (unsigned k = 0; k < shipPos.size(); ++k) {
     this->board[shipPos[k].first][shipPos[k].second] = shipName;

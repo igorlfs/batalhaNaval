@@ -1,5 +1,6 @@
 #ifndef SHIP_H
 #define SHIP_H
+#include <map>
 #include <string>
 #include <utility>
 #include <vector>
@@ -16,15 +17,15 @@ public:
 
   void setDirection(const char &direction);
   void setDirection(const bool &direction);
-  void setPosition(const std::pair<int, int> &position);
+  void setCells(const std::pair<int, int> &position);
 
-  std::vector<std::pair<int, int>> getPosition() const;
-  void clearLocation();
+  std::vector<std::pair<int, int>> getLocation() const;
+  void clearCells();
 
 protected:
   int size;
   std::string name;
-  std::vector<std::pair<int, int>> location;
+  std::map<std::pair<int, int>, bool> cells;
   bool direction;
 };
 } // namespace ships
