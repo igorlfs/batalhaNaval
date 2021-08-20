@@ -1,6 +1,6 @@
-#include "player.hpp"
+#include "human.hpp"
 #include <iostream>
 int main() {
-  player ass;
+  players::human player;
   return 0;
 }
