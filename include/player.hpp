@@ -15,7 +15,11 @@ public:
 private:
   static constexpr int ROWS = 6;
   static constexpr int COLS = 6;
+
   static constexpr int TOTAL_SHIPS = 6;
+  static constexpr int SHIP_TYPES = 5;
+  static constexpr int NUM_EACH_SHIP[SHIP_TYPES] = {1, 1, 1, 1, 2};
+
   static constexpr char EMPTY = ' ';
 
   char board[ROWS][COLS];
@@ -30,6 +34,8 @@ private:
   void printHeader() const;
   void printSeparator() const;
   void printBoard() const;
+
+  void initializeShips();
 
   std::pair<int, int> choosePosition(const ships::ship &ship) const;
   bool isOutOfBounds(const ships::ship &ship,

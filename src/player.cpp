@@ -1,4 +1,5 @@
 #include "player.hpp"
+#include <assert.h>
 #include <iostream>
 void player::initializeBoard() {
   for (int i = 0; i < ROWS; ++i) {
@@ -106,14 +107,42 @@ void player::updateBoard(ships::ship &ship) {
     this->board[shipPos[k].first][shipPos[k].second] = shipName;
   }
 }
+void player::initializeShips() {
+  int sumEachShip = 0;
+  for (int i = 0; i < SHIP_TYPES; ++i) {
+    sumEachShip += NUM_EACH_SHIP[i];
+  }
+  assert(sumEachShip == TOTAL_SHIPS);
+  int shipInitializer = 0;
+  for (int i = 0; i < SHIP_TYPES; ++i) {
+    for (int j = 0; j < NUM_EACH_SHIP[i]; ++j) {
+      switch (i) {
+      case 0:
+        this->ships[shipInitializer] = new ships::carrier;
+        break;
+      case 1:
+        this->ships[shipInitializer] = new ships::battleship;
+        break;
+      case 2:
+        this->ships[shipInitializer] = new ships::destroyer;
+        break;
+      case 3:
+        this->ships[shipInitializer] = new ships::submarine;
+        break;
+      case 4:
+        this->ships[shipInitializer] = new ships::patrolBoat;
+        break;
+      default:
+        std::cerr << "Error: couldn't initialize ships: unexpected ship type";
+      }
+      shipInitializer++;
+    }
+  }
+  assert(shipInitializer == TOTAL_SHIPS);
+}
 player::player() {
   this->initializeBoard();
-  this->ships[0] = new ships::carrier;
-  this->ships[1] = new ships::battleship;
-  this->ships[2] = new ships::destroyer;
-  this->ships[3] = new ships::submarine;
-  this->ships[4] = new ships::patrolBoat;
-  this->ships[5] = new ships::patrolBoat;
+  this->initializeShips();
   for (int i = 0; i < TOTAL_SHIPS; ++i) {
   restartPosition:
     this->printBoard();
