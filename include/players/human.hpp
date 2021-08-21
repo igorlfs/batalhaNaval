@@ -6,10 +6,10 @@ class human : public player {
 public:
   human();
 
+  void attack() override;
+
 private:
   void printBoard() const;
-  void printHeader() const;
-  void printSeparator() const;
 
   void clearShip(ships::ship *ship);
 
@@ -19,6 +19,9 @@ private:
                      const std::pair<int, int> &pos) const override;
   bool isOverlaping(const ships::ship &ship,
                     const std::pair<int, int> &pos) const override;
+
+  bool isAttackOutOfBounds(const std::pair<int, int> &attackCandidate) const;
+  bool isAttemptRepeated(const std::pair<int, int> &position) const override;
 };
 } // namespace players
 #endif

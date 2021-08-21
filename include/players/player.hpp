@@ -5,8 +5,11 @@
 #include "destroyer.hpp"
 #include "patrolBoat.hpp"
 #include "submarine.hpp"
+#include <set>
 #include <string>
 namespace players {
+static constexpr int ROWS = 6;
+static constexpr int COLS = 6;
 class player {
 private:
   static constexpr int SHIP_TYPES = 5;
@@ -22,16 +25,12 @@ private:
   virtual std::pair<int, int> choosePosition(const ships::ship &ship) const = 0;
 
 protected:
-  static constexpr int ROWS = 6;
-  static constexpr int COLS = 6;
   static constexpr int TILES = ROWS * COLS;
   static constexpr double MAX_OCCUPABLE = 0.8;
 
   static constexpr int TOTAL_SHIPS = 6;
 
   static constexpr char EMPTY = ' ';
-
-  char board[ROWS][COLS];
 
   // Segundo a wikipédia, o jogo original conta com
   // 1 carrier, 2 battleships, 3 destroyers, 4 submarines, 5 patrolBoats
@@ -43,9 +42,21 @@ protected:
 
   bool isThereEnoughSpace();
 
-  void addShipToBoard(ships::ship &ship);
+  void addShipToBoard(const ships::ship &ship);
+
+  virtual bool isAttemptRepeated(const std::pair<int, int> &position) const = 0;
 
   virtual ~player();
+
+public:
+  char board[ROWS][COLS];
+
+  std::set<std::pair<int, int>> bombingAttempts;
+  bool wasAnAttempt(const std::pair<int, int> &cell) const;
+  virtual void attack() = 0;
+
+  void printHeader() const;
+  void printSeparator() const;
 };
 } // namespace players
 #endif

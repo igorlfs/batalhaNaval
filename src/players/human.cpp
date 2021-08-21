@@ -5,20 +5,20 @@ human::human() {
   this->initializeBoard();
   this->initializeShips();
   for (int i = 0; i < TOTAL_SHIPS; ++i) {
-  restartPosition:
+    /* restartPosition: */
     this->printBoard();
     this->ships[i]->setDirection(chooseDirection(*this->ships[i]));
     this->ships[i]->setCells(choosePosition(*this->ships[i]));
     this->addShipToBoard(*this->ships[i]);
-    this->printBoard();
-    std::cout << "Você está feliz com a posição atual do barco? (S/n)\n"
-                 "Digite 'n' para selecionar uma nova orientação/posição: ";
-    char changePos;
-    std::cin >> changePos;
-    if (changePos == 'n') {
-      this->clearShip(this->ships[i]);
-      goto restartPosition;
-    }
+    /* this->printBoard(); */
+    /* std::cout<<"Você está feliz com a posição atual do barco? (S/n)\n" */
+    /*            "Digite 'n' para selecionar uma nova orientação/posição: "; */
+    /* char changePos; */
+    /* std::cin >> changePos; */
+    /* if (changePos == 'n') { */
+    /*   this->clearShip(this->ships[i]); */
+    /*   goto restartPosition; */
+    /* } */
   }
 }
 void human::printBoard() const {
@@ -36,30 +36,6 @@ void human::printBoard() const {
     }
     ++col;
     std::cout << std::endl;
-  }
-  std::cout << std::endl;
-}
-void human::printHeader() const {
-  // Print natural counting header (starting at 1)
-  for (int i = 0; i < COLS + 1; ++i) {
-    (i == 0)      ? std::cout << "  "
-    : (i == COLS) ? std::cout << 'X'
-                  : std::cout << i - 1;
-    if (i != COLS) {
-      std::cout << " │ ";
-    }
-  }
-  std::cout << std::endl;
-}
-void human::printSeparator() const {
-  for (int i = 0; i < COLS + 1; ++i) {
-    if (i == 0) {
-      std::cout << "───┼";
-    } else if (i == COLS) {
-      std::cout << "───";
-    } else {
-      std::cout << "───┼";
-    }
   }
   std::cout << std::endl;
 }
@@ -112,4 +88,30 @@ std::pair<int, int> human::choosePosition(const ships::ship &ship) const {
   } while (this->isOutOfBounds(ship, position) == true ||
            this->isOverlaping(ship, position) == true);
   return position;
+}
+void human::attack() {
+  std::pair<int, int> attackPosition;
+  std::cout << "Escolha onde deseja atacar: ";
+  do {
+    std::cin >> attackPosition.first >> attackPosition.second;
+  } while (isAttackOutOfBounds(attackPosition) == false ||
+           isAttemptRepeated(attackPosition) == true);
+  bombingAttempts.insert(attackPosition);
+}
+bool human::isAttackOutOfBounds(
+    const std::pair<int, int> &attackCandidate) const {
+  if (attackCandidate.first >= ROWS || attackCandidate.second >= COLS) {
+    std::cout << "Oops. Essa posição não está no campo inimigo\n"
+                 "Escolha outra posição: ";
+    return false;
+  }
+  return true;
+}
+bool human::isAttemptRepeated(const std::pair<int, int> &position) const {
+  if (this->bombingAttempts.find(position) != this->bombingAttempts.end()) {
+    std::cout << "Você já atacou nessa posição!\n"
+                 "Por favor, escolha outra posição: ";
+    return true;
+  }
+  return false;
 }

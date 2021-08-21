@@ -5,6 +5,7 @@ namespace players {
 class computer : public player {
 public:
   computer();
+  void attack() override;
 
 private:
   bool chooseDirection() const;
@@ -13,6 +14,8 @@ private:
                      const std::pair<int, int> &pos) const override;
   bool isOverlaping(const ships::ship &ship,
                     const std::pair<int, int> &pos) const override;
+
+  bool isAttemptRepeated(const std::pair<int, int> &position) const override;
 };
 } // namespace players
 #endif

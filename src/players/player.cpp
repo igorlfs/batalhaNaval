@@ -9,7 +9,7 @@ void player::initializeBoard() {
     }
   }
 }
-void player::addShipToBoard(ships::ship &ship) {
+void player::addShipToBoard(const ships::ship &ship) {
   std::vector<std::pair<int, int>> shipPos = ship.getLocation();
   char shipName = ship.getName()[0];
   for (unsigned k = 0; k < shipPos.size(); ++k) {
@@ -79,4 +79,35 @@ player::~player() {
   for (int i = 0; i < TOTAL_SHIPS; ++i) {
     delete ships[i];
   }
+}
+void player::printHeader() const {
+  for (int i = 0; i < COLS + 1; ++i) {
+    (i == 0)      ? std::cout << "  "
+    : (i == COLS) ? std::cout << 'X'
+                  : std::cout << i - 1;
+    if (i != COLS) {
+      std::cout << " │ ";
+    }
+  }
+  std::cout << std::endl;
+}
+void player::printSeparator() const {
+  for (int i = 0; i < COLS + 1; ++i) {
+    if (i == 0) {
+      std::cout << "───┼";
+    } else if (i == COLS) {
+      std::cout << "───";
+    } else {
+      std::cout << "───┼";
+    }
+  }
+  std::cout << std::endl;
+}
+bool player::wasAnAttempt(const std::pair<int, int> &cell) const {
+  for (auto i : this->bombingAttempts) {
+    if (i == cell) {
+      return true;
+    }
+  }
+  return false;
 }
