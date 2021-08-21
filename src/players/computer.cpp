@@ -17,7 +17,7 @@ computer::computer() {
   for (int i = 0; i < TOTAL_SHIPS; ++i) {
     this->ships[i]->setDirection(chooseDirection());
     this->ships[i]->setCells(choosePosition(*this->ships[i]));
-    this->addShipToBoard(*this->ships[i]);
+    this->addShipToGrid(*this->ships[i]);
   }
 }
 bool computer::chooseDirection() const { return randomNumberGenerator(0, 1); }
@@ -44,7 +44,7 @@ bool computer::isOverlaping(const ships::ship &ship,
   testShip.setCells(pos);
   std::vector<std::pair<int, int>> positionCandidate = testShip.getLocation();
   for (unsigned k = 0; k < positionCandidate.size(); ++k) {
-    if (this->board[positionCandidate[k].first][positionCandidate[k].second] !=
+    if (this->grid[positionCandidate[k].first][positionCandidate[k].second] !=
         EMPTY) {
       return 1;
     }

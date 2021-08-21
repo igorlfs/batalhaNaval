@@ -42,14 +42,14 @@ protected:
 
   bool isThereEnoughSpace();
 
-  void addShipToBoard(const ships::ship &ship);
+  void addShipToGrid(const ships::ship &ship);
 
   virtual bool isAttemptRepeated(const std::pair<int, int> &position) const = 0;
 
   virtual ~player();
 
 public:
-  char board[ROWS][COLS];
+  char grid[ROWS][COLS];
 
   std::set<std::pair<int, int>> bombingAttempts;
   bool wasAnAttempt(const std::pair<int, int> &cell) const;

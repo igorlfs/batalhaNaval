@@ -1,10 +1,10 @@
 #include "computer.hpp"
 #include "human.hpp"
 #include <iostream>
-void printAttackBoard(const players::player &defender,
+void printTrackingGrid(const players::player &tracked,
+                       const players::player &traking);
+void printPrimaryGrid(const players::player &defender,
                       const players::player &attacker);
-void printDefenseBoard(const players::player &defender,
-                       const players::player &attacker);
 int main() {
   // TODO:
   //
@@ -19,23 +19,23 @@ int main() {
   players::computer cpu;
   players::computer cpu2;
   while (1) {
-    printAttackBoard(cpu, person);
+    printTrackingGrid(cpu, person);
     person.attack();
     cpu.attack();
-    printDefenseBoard(person, cpu);
+    printPrimaryGrid(person, cpu);
   }
   return 0;
 }
-void printAttackBoard(const players::player &defender,
-                      const players::player &attacker) {
-  defender.printHeader();
+void printTrackingGrid(const players::player &tracked,
+                       const players::player &traking) {
+  tracked.printHeader();
   char col = '0';
   for (int i = 0; i < players::ROWS; ++i) {
-    defender.printSeparator();
+    tracked.printSeparator();
     std::cout << ' ' << col;
     std::cout << " │ ";
     for (int j = 0; j < players::COLS; ++j) {
-      if (attacker.wasAnAttempt({i, j})) {
+      if (traking.wasAnAttempt({i, j})) {
         std::cout << 'x';
       } else {
         std::cout << 'o';
@@ -51,8 +51,8 @@ void printAttackBoard(const players::player &defender,
   // Stop execution to analize stuff
   std::cin >> col;
 }
-void printDefenseBoard(const players::player &defender,
-                       const players::player &attacker) {
+void printPrimaryGrid(const players::player &defender,
+                      const players::player &attacker) {
   defender.printHeader();
   char col = '0';
   for (int i = 0; i < players::ROWS; ++i) {
@@ -63,7 +63,7 @@ void printDefenseBoard(const players::player &defender,
       if (attacker.wasAnAttempt({i, j})) {
         std::cout << 'x';
       } else {
-        std::cout << defender.board[i][j];
+        std::cout << defender.grid[i][j];
       }
       if (j != players::COLS - 1) {
         std::cout << " │ ";

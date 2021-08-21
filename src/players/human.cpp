@@ -6,11 +6,11 @@ human::human() {
   this->initializeShips();
   for (int i = 0; i < TOTAL_SHIPS; ++i) {
     /* restartPosition: */
-    this->printBoard();
+    this->printGrid();
     this->ships[i]->setDirection(chooseDirection(*this->ships[i]));
     this->ships[i]->setCells(choosePosition(*this->ships[i]));
-    this->addShipToBoard(*this->ships[i]);
-    /* this->printBoard(); */
+    this->addShipToGrid(*this->ships[i]);
+    /* this->printGrid(); */
     /* std::cout<<"Você está feliz com a posição atual do barco? (S/n)\n" */
     /*            "Digite 'n' para selecionar uma nova orientação/posição: "; */
     /* char changePos; */
@@ -21,7 +21,7 @@ human::human() {
     /* } */
   }
 }
-void human::printBoard() const {
+void human::printGrid() const {
   this->printHeader();
   char col = '0';
   for (int i = 0; i < ROWS; ++i) {
@@ -29,7 +29,7 @@ void human::printBoard() const {
     std::cout << ' ' << col;
     std::cout << " │ ";
     for (int j = 0; j < COLS; ++j) {
-      std::cout << this->board[i][j];
+      std::cout << this->grid[i][j];
       if (j != COLS - 1) {
         std::cout << " │ ";
       }
@@ -52,7 +52,7 @@ readDirection:
 void human::clearShip(ships::ship *ship) {
   std::vector<std::pair<int, int>> shipPos = ship->getLocation();
   for (unsigned k = 0; k < shipPos.size(); ++k) {
-    this->board[shipPos[k].first][shipPos[k].second] = EMPTY;
+    this->grid[shipPos[k].first][shipPos[k].second] = EMPTY;
   }
   ship->clearCells();
 }
@@ -71,7 +71,7 @@ bool human::isOverlaping(const ships::ship &ship,
   testShip.setCells(pos);
   std::vector<std::pair<int, int>> positionCandidate = testShip.getLocation();
   for (unsigned k = 0; k < positionCandidate.size(); ++k) {
-    if (this->board[positionCandidate[k].first][positionCandidate[k].second] !=
+    if (this->grid[positionCandidate[k].first][positionCandidate[k].second] !=
         EMPTY) {
       std::cout << "Você não pode inserir um navio em cima de outro navio.\n"
                    "Por favor, escolha outra posição: ";

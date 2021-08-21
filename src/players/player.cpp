@@ -5,15 +5,15 @@ using namespace players;
 void player::initializeBoard() {
   for (int i = 0; i < ROWS; ++i) {
     for (int j = 0; j < COLS; ++j) {
-      this->board[i][j] = EMPTY;
+      this->grid[i][j] = EMPTY;
     }
   }
 }
-void player::addShipToBoard(const ships::ship &ship) {
+void player::addShipToGrid(const ships::ship &ship) {
   std::vector<std::pair<int, int>> shipPos = ship.getLocation();
   char shipName = ship.getName()[0];
   for (unsigned k = 0; k < shipPos.size(); ++k) {
-    this->board[shipPos[k].first][shipPos[k].second] = shipName;
+    this->grid[shipPos[k].first][shipPos[k].second] = shipName;
   }
 }
 bool player::isThereEnoughSpace() {

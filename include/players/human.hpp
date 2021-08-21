@@ -9,7 +9,7 @@ public:
   void attack() override;
 
 private:
-  void printBoard() const;
+  void printGrid() const;
 
   void clearShip(ships::ship *ship);
 
