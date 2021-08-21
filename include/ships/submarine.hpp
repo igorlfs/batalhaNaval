@@ -4,8 +4,8 @@
 namespace ships {
 static constexpr int SUBMARINE_SIZE = 3;
 class submarine : public ship {
-public:
-  submarine() : ship(SUBMARINE_SIZE, "submarine"){};
+  public:
+    submarine() : ship(SUBMARINE_SIZE, "submarine"){};
 };
 } // namespace ships
 #endif

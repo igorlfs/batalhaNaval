@@ -6,27 +6,27 @@
 #include <vector>
 namespace ships {
 class ship {
-public:
-  ship(const int &size, const std::string &name) : size(size), name(name){};
+  public:
+    ship(const int &size, const std::string &name) : size(size), name(name){};
 
-  int getSize() const { return this->size; }
-  std::string getName() const { return this->name; }
+    int getSize() const { return this->size; }
+    std::string getName() const { return this->name; }
 
-  // @return 'true' for horizontal, 'false' for vertical
-  bool getDirection() const { return this->direction; }
+    // @return 'true' for horizontal, 'false' for vertical
+    bool getDirection() const { return this->direction; }
 
-  void setDirection(const char &direction);
-  void setDirection(const bool &direction);
-  void setCells(const std::pair<int, int> &position);
+    void setDirection(const char &direction);
+    void setDirection(const bool &direction);
+    void setCells(const std::pair<int, int> &position);
 
-  std::vector<std::pair<int, int>> getLocation() const;
-  void clearCells();
+    std::vector<std::pair<int, int>> getLocation() const;
+    void clearCells();
 
-protected:
-  int size;
-  std::string name;
-  std::map<std::pair<int, int>, bool> cells;
-  bool direction;
+  protected:
+    int size;
+    std::string name;
+    std::map<std::pair<int, int>, bool> cells;
+    bool direction;
 };
 } // namespace ships
 
