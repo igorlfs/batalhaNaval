@@ -6,7 +6,16 @@ void printAttackBoard(const players::player &defender,
 void printDefenseBoard(const players::player &defender,
                        const players::player &attacker);
 int main() {
-  players::human player;
+  // TODO:
+  //
+  // Change ship's state when attacking
+  // Was target hit?
+  //
+  // Win condition
+  // Consider using unsigned for pairs
+  // Correct input
+  // Colors
+  players::human person;
   players::computer cpu;
   players::computer cpu2;
   while (1) {
