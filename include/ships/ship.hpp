@@ -22,6 +22,8 @@ class ship {
     std::vector<std::pair<uint, uint>> getLocation() const;
     void clearCells();
 
+    void bombCell(const std::pair<uint, uint> position);
+
   protected:
     int size;
     std::string name;

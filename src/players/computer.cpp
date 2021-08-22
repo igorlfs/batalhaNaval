@@ -53,13 +53,14 @@ bool computer::isOverlaping(const ships::ship &ship,
     }
     return 0;
 }
-void computer::attack() {
+void computer::attack(player &enemy) {
     std::pair<uint, uint> attackPositionCandidate;
     do {
         attackPositionCandidate = {randomNumberGenerator(0, ROWS - 1),
                                    randomNumberGenerator(0, COLS - 1)};
     } while (this->isAttemptRepeated(attackPositionCandidate) == true);
     this->bombingAttempts.insert(attackPositionCandidate);
+    enemy.wasHit(attackPositionCandidate);
 }
 bool computer::isAttemptRepeated(const std::pair<uint, uint> &position) const {
     if (this->bombingAttempts.find(position) != this->bombingAttempts.end()) {

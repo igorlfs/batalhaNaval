@@ -4,24 +4,24 @@
 void printTrackingGrid(const players::player &tracked,
                        const players::player &traking);
 void printPrimaryGrid(const players::player &defender,
-                      const players::player &attacker);
+                      const players::player &enemy);
 int main() {
     // TODO:
     //
-    // Change ship's state when attacking
-    // Was target hit?
-    //
-    // Win condition
-    // Consider using unsigned for pairs
     // Correct input
     // Colors
+    //
+    // Fix magic chars
+    // Improve interrupting execution;
+    // Message displaying when a ship was destryoed
+    // Win condition
+    // Explain how to play the game
     players::human person;
     players::computer cpu;
-    players::computer cpu2;
     while (1) {
         printTrackingGrid(cpu, person);
-        person.attack();
-        cpu.attack();
+        person.attack(cpu);
+        cpu.attack(person);
         printPrimaryGrid(person, cpu);
     }
     return 0;
@@ -32,17 +32,14 @@ void printTrackingGrid(const players::player &tracked,
     char col = '0';
     for (int i = 0; i < players::ROWS; ++i) {
         tracked.printSeparator();
-        std::cout << ' ' << col;
-        std::cout << " │ ";
+        std::cout << ' ' << col << " │ ";
         for (int j = 0; j < players::COLS; ++j) {
             if (traking.wasAnAttempt({i, j})) {
-                std::cout << 'x';
-            } else {
-                std::cout << 'o';
-            }
-            if (j != players::COLS - 1) {
+                (tracked.isHit({i, j})) ? std::cout << 'H' : std::cout << 'X';
+            } else
+                std::cout << 'O'; // Use empty char?
+            if (j != players::COLS - 1)
                 std::cout << " │ ";
-            }
         }
         ++col;
         std::cout << std::endl;
@@ -51,26 +48,25 @@ void printTrackingGrid(const players::player &tracked,
     // Stop execution to analize stuff
     std::cin >> col;
 }
-void printPrimaryGrid(const players::player &defender,
-                      const players::player &attacker) {
-    defender.printHeader();
+void printPrimaryGrid(const players::player &person,
+                      const players::player &enemy) {
+    person.printHeader();
     char col = '0';
     for (int i = 0; i < players::ROWS; ++i) {
-        defender.printSeparator();
-        std::cout << ' ' << col;
-        std::cout << " │ ";
+        person.printSeparator();
+        std::cout << ' ' << col << " │ ";
         for (int j = 0; j < players::COLS; ++j) {
-            if (attacker.wasAnAttempt({i, j})) {
-                std::cout << 'x';
-            } else {
-                std::cout << defender.grid[i][j];
-            }
-            if (j != players::COLS - 1) {
+            if (enemy.wasAnAttempt({i, j})) {
+                (person.isHit({i, j})) ? std::cout << 'H' : std::cout << 'X';
+            } else
+                std::cout << person.grid[i][j];
+            if (j != players::COLS - 1)
                 std::cout << " │ ";
-            }
         }
         ++col;
         std::cout << std::endl;
     }
     std::cout << std::endl;
+    // Stop execution to analize stuff
+    std::cin >> col;
 }

@@ -5,7 +5,7 @@ namespace players {
 class computer : public player {
   public:
     computer();
-    void attack() override;
+    void attack(player &enemy) override;
 
   private:
     bool chooseDirection() const;

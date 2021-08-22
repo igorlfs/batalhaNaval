@@ -16,7 +16,7 @@ void player::addShipToGrid(const ships::ship &ship) {
         this->grid[shipPos[k].first][shipPos[k].second] = shipName;
     }
 }
-bool player::isThereEnoughSpace() {
+bool player::isThereEnoughSpace() const {
     int shipSizes[SHIP_TYPES] = {ships::CARRIER_SIZE, ships::BATTLESHIP_SIZE,
                                  ships::DESTROYER_SIZE, ships::SUBMARINE_SIZE,
                                  ships::PATROL_BOAT_SIZE};
@@ -102,10 +102,27 @@ void player::printSeparator() const {
     std::cout << std::endl;
 }
 bool player::wasAnAttempt(const std::pair<uint, uint> &cell) const {
-    for (auto i : this->bombingAttempts) {
-        if (i == cell) {
+    for (auto i : this->bombingAttempts)
+        if (i == cell)
             return true;
+    return false;
+}
+bool player::isHit(const std::pair<uint, uint> &cell) const {
+    for (auto i : this->hitByTheEnemey)
+        if (i == cell)
+            return true;
+    return false;
+}
+void player::wasHit(const std::pair<uint, uint> &attackPos) {
+    for (int i = 0; i < TOTAL_SHIPS; ++i) {
+        std::vector<std::pair<uint, uint>> location =
+            this->ships[i]->getLocation();
+        for (uint k = 0; k < this->ships[i]->getSize(); ++k) {
+            if (location[k].first == attackPos.first &&
+                location[k].second == attackPos.second) {
+                this->ships[i]->bombCell(attackPos);
+                this->hitByTheEnemey.insert(attackPos);
+            }
         }
     }
-    return false;
 }

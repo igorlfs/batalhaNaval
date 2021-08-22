@@ -41,7 +41,7 @@ class player {
     void initializeBoard();
     void initializeShips();
 
-    bool isThereEnoughSpace();
+    bool isThereEnoughSpace() const;
 
     void addShipToGrid(const ships::ship &ship);
 
@@ -53,9 +53,14 @@ class player {
   public:
     char grid[ROWS][COLS];
 
+    virtual void attack(player &enemy) = 0;
+
     std::set<std::pair<uint, uint>> bombingAttempts;
     bool wasAnAttempt(const std::pair<uint, uint> &cell) const;
-    virtual void attack() = 0;
+
+    void wasHit(const std::pair<uint, uint> &position);
+    std::set<std::pair<uint, uint>> hitByTheEnemey;
+    bool isHit(const std::pair<uint, uint> &cell) const;
 
     void printHeader() const;
     void printSeparator() const;

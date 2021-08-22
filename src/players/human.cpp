@@ -6,7 +6,7 @@ human::human() {
     this->initializeShips();
     for (int i = 0; i < TOTAL_SHIPS; ++i) {
         /* restartPosition: */
-        this->printGrid();
+        this->printContructionGrid();
         this->ships[i]->setDirection(chooseDirection(*this->ships[i]));
         this->ships[i]->setCells(choosePosition(*this->ships[i]));
         this->addShipToGrid(*this->ships[i]);
@@ -22,7 +22,7 @@ human::human() {
         /* } */
     }
 }
-void human::printGrid() const {
+void human::printContructionGrid() const {
     this->printHeader();
     char col = '0';
     for (int i = 0; i < ROWS; ++i) {
@@ -90,7 +90,7 @@ std::pair<uint, uint> human::choosePosition(const ships::ship &ship) const {
              this->isOverlaping(ship, position) == true);
     return position;
 }
-void human::attack() {
+void human::attack(player &enemy) {
     std::pair<uint, uint> attackPosition;
     std::cout << "Escolha onde deseja atacar: ";
     do {
@@ -98,6 +98,7 @@ void human::attack() {
     } while (isAttackOutOfBounds(attackPosition) == false ||
              isAttemptRepeated(attackPosition) == true);
     bombingAttempts.insert(attackPosition);
+    enemy.wasHit(attackPosition);
 }
 bool human::isAttackOutOfBounds(
     const std::pair<uint, uint> &attackCandidate) const {

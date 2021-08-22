@@ -25,4 +25,7 @@ std::vector<std::pair<uint, uint>> ship::getLocation() const {
     }
     return location;
 }
+void ship::bombCell(const std::pair<uint, uint> position) {
+    this->cells[{position.first, position.second}] = 1;
+}
 void ship::clearCells() { this->cells.clear(); }

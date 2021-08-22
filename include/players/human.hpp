@@ -6,10 +6,10 @@ class human : public player {
   public:
     human();
 
-    void attack() override;
+    void attack(player &enemy) override;
 
   private:
-    void printGrid() const;
+    void printContructionGrid() const;
 
     void clearShip(ships::ship *ship);
 
