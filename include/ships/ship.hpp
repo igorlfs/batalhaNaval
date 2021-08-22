@@ -17,15 +17,15 @@ class ship {
 
     void setDirection(const char &direction);
     void setDirection(const bool &direction);
-    void setCells(const std::pair<int, int> &position);
+    void setCells(const std::pair<uint, uint> &position);
 
-    std::vector<std::pair<int, int>> getLocation() const;
+    std::vector<std::pair<uint, uint>> getLocation() const;
     void clearCells();
 
   protected:
     int size;
     std::string name;
-    std::map<std::pair<int, int>, bool> cells;
+    std::map<std::pair<uint, uint>, bool> cells;
     bool direction;
 };
 } // namespace ships

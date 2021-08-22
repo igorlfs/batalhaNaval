@@ -14,14 +14,17 @@ class human : public player {
     void clearShip(ships::ship *ship);
 
     char chooseDirection(const ships::ship &ship) const;
-    std::pair<int, int> choosePosition(const ships::ship &ship) const override;
+    std::pair<uint, uint>
+    choosePosition(const ships::ship &ship) const override;
     bool isOutOfBounds(const ships::ship &ship,
-                       const std::pair<int, int> &pos) const override;
+                       const std::pair<uint, uint> &pos) const override;
     bool isOverlaping(const ships::ship &ship,
-                      const std::pair<int, int> &pos) const override;
+                      const std::pair<uint, uint> &pos) const override;
 
-    bool isAttackOutOfBounds(const std::pair<int, int> &attackCandidate) const;
-    bool isAttemptRepeated(const std::pair<int, int> &position) const override;
+    bool
+    isAttackOutOfBounds(const std::pair<uint, uint> &attackCandidate) const;
+    bool
+    isAttemptRepeated(const std::pair<uint, uint> &position) const override;
 };
 } // namespace players
 #endif

@@ -51,14 +51,14 @@ readDirection:
     return direc;
 }
 void human::clearShip(ships::ship *ship) {
-    std::vector<std::pair<int, int>> shipPos = ship->getLocation();
+    std::vector<std::pair<uint, uint>> shipPos = ship->getLocation();
     for (unsigned k = 0; k < shipPos.size(); ++k) {
         this->grid[shipPos[k].first][shipPos[k].second] = EMPTY;
     }
     ship->clearCells();
 }
 bool human::isOutOfBounds(const ships::ship &ship,
-                          const std::pair<int, int> &pos) const {
+                          const std::pair<uint, uint> &pos) const {
     if ((ship.getDirection() && ship.getSize() + pos.second > ROWS) ||
         (!ship.getDirection() && ship.getSize() + pos.first > COLS)) {
         std::cout << "Navio não cabe aqui, escolha outra posição: ";
@@ -67,10 +67,11 @@ bool human::isOutOfBounds(const ships::ship &ship,
     return 0;
 }
 bool human::isOverlaping(const ships::ship &ship,
-                         const std::pair<int, int> &pos) const {
+                         const std::pair<uint, uint> &pos) const {
     ships::ship testShip = ship;
     testShip.setCells(pos);
-    std::vector<std::pair<int, int>> positionCandidate = testShip.getLocation();
+    std::vector<std::pair<uint, uint>> positionCandidate =
+        testShip.getLocation();
     for (unsigned k = 0; k < positionCandidate.size(); ++k) {
         if (this->grid[positionCandidate[k].first]
                       [positionCandidate[k].second] != EMPTY) {
@@ -82,9 +83,9 @@ bool human::isOverlaping(const ships::ship &ship,
     }
     return 0;
 }
-std::pair<int, int> human::choosePosition(const ships::ship &ship) const {
+std::pair<uint, uint> human::choosePosition(const ships::ship &ship) const {
     std::cout << "Escolha a posição do '" << ship.getName() << "': ";
-    std::pair<int, int> position;
+    std::pair<uint, uint> position;
     do {
         std::cin >> position.first >> position.second;
     } while (this->isOutOfBounds(ship, position) == true ||
@@ -92,7 +93,7 @@ std::pair<int, int> human::choosePosition(const ships::ship &ship) const {
     return position;
 }
 void human::attack() {
-    std::pair<int, int> attackPosition;
+    std::pair<uint, uint> attackPosition;
     std::cout << "Escolha onde deseja atacar: ";
     do {
         std::cin >> attackPosition.first >> attackPosition.second;
@@ -101,7 +102,7 @@ void human::attack() {
     bombingAttempts.insert(attackPosition);
 }
 bool human::isAttackOutOfBounds(
-    const std::pair<int, int> &attackCandidate) const {
+    const std::pair<uint, uint> &attackCandidate) const {
     if (attackCandidate.first >= ROWS || attackCandidate.second >= COLS) {
         std::cout << "Oops. Essa posição não está no campo inimigo\n"
                      "Escolha outra posição: ";
@@ -109,7 +110,7 @@ bool human::isAttackOutOfBounds(
     }
     return true;
 }
-bool human::isAttemptRepeated(const std::pair<int, int> &position) const {
+bool human::isAttemptRepeated(const std::pair<uint, uint> &position) const {
     if (this->bombingAttempts.find(position) != this->bombingAttempts.end()) {
         std::cout << "Você já atacou nessa posição!\n"
                      "Por favor, escolha outra posição: ";

@@ -19,10 +19,10 @@ class player {
     // O linkador espera que elas estejam definidas em algum momento do programa
     // Um jeito de fazer isso é usando esse '= 0'
     virtual bool isOutOfBounds(const ships::ship &ship,
-                               const std::pair<int, int> &pos) const = 0;
+                               const std::pair<uint, uint> &pos) const = 0;
     virtual bool isOverlaping(const ships::ship &ship,
-                              const std::pair<int, int> &pos) const = 0;
-    virtual std::pair<int, int>
+                              const std::pair<uint, uint> &pos) const = 0;
+    virtual std::pair<uint, uint>
     choosePosition(const ships::ship &ship) const = 0;
 
   protected:
@@ -46,15 +46,15 @@ class player {
     void addShipToGrid(const ships::ship &ship);
 
     virtual bool
-    isAttemptRepeated(const std::pair<int, int> &position) const = 0;
+    isAttemptRepeated(const std::pair<uint, uint> &position) const = 0;
 
     virtual ~player();
 
   public:
     char grid[ROWS][COLS];
 
-    std::set<std::pair<int, int>> bombingAttempts;
-    bool wasAnAttempt(const std::pair<int, int> &cell) const;
+    std::set<std::pair<uint, uint>> bombingAttempts;
+    bool wasAnAttempt(const std::pair<uint, uint> &cell) const;
     virtual void attack() = 0;
 
     void printHeader() const;

@@ -7,7 +7,7 @@ void ship::setDirection(const char &direction) {
     (direction == 'h') ? this->direction = 1 : this->direction = 0;
 }
 void ship::setDirection(const bool &direction) { this->direction = direction; }
-void ship::setCells(const std::pair<int, int> &position) {
+void ship::setCells(const std::pair<uint, uint> &position) {
     if (this->direction) {
         for (int i = 0; i < this->size; ++i) {
             this->cells[{position.first, position.second + i}] = 0;
@@ -18,8 +18,8 @@ void ship::setCells(const std::pair<int, int> &position) {
         }
     }
 }
-std::vector<std::pair<int, int>> ship::getLocation() const {
-    std::vector<std::pair<int, int>> location;
+std::vector<std::pair<uint, uint>> ship::getLocation() const {
+    std::vector<std::pair<uint, uint>> location;
     for (auto const &i : this->cells) {
         location.push_back(i.first);
     }

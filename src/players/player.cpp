@@ -10,7 +10,7 @@ void player::initializeBoard() {
     }
 }
 void player::addShipToGrid(const ships::ship &ship) {
-    std::vector<std::pair<int, int>> shipPos = ship.getLocation();
+    std::vector<std::pair<uint, uint>> shipPos = ship.getLocation();
     char shipName = ship.getName()[0];
     for (unsigned k = 0; k < shipPos.size(); ++k) {
         this->grid[shipPos[k].first][shipPos[k].second] = shipName;
@@ -105,7 +105,7 @@ void player::printSeparator() const {
     }
     std::cout << std::endl;
 }
-bool player::wasAnAttempt(const std::pair<int, int> &cell) const {
+bool player::wasAnAttempt(const std::pair<uint, uint> &cell) const {
     for (auto i : this->bombingAttempts) {
         if (i == cell) {
             return true;

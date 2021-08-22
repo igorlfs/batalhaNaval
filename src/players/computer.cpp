@@ -22,8 +22,8 @@ computer::computer() {
     }
 }
 bool computer::chooseDirection() const { return randomNumberGenerator(0, 1); }
-std::pair<int, int> computer::choosePosition(const ships::ship &ship) const {
-    std::pair<int, int> position;
+std::pair<uint, uint> computer::choosePosition(const ships::ship &ship) const {
+    std::pair<uint, uint> position;
     do {
         position = {randomNumberGenerator(0, ROWS - 1),
                     randomNumberGenerator(0, COLS - 1)};
@@ -32,7 +32,7 @@ std::pair<int, int> computer::choosePosition(const ships::ship &ship) const {
     return position;
 }
 bool computer::isOutOfBounds(const ships::ship &ship,
-                             const std::pair<int, int> &pos) const {
+                             const std::pair<uint, uint> &pos) const {
     if ((ship.getDirection() && ship.getSize() + pos.second > ROWS) ||
         (!ship.getDirection() && ship.getSize() + pos.first > COLS)) {
         return 1;
@@ -40,10 +40,11 @@ bool computer::isOutOfBounds(const ships::ship &ship,
     return 0;
 }
 bool computer::isOverlaping(const ships::ship &ship,
-                            const std::pair<int, int> &pos) const {
+                            const std::pair<uint, uint> &pos) const {
     ships::ship testShip = ship;
     testShip.setCells(pos);
-    std::vector<std::pair<int, int>> positionCandidate = testShip.getLocation();
+    std::vector<std::pair<uint, uint>> positionCandidate =
+        testShip.getLocation();
     for (unsigned k = 0; k < positionCandidate.size(); ++k) {
         if (this->grid[positionCandidate[k].first]
                       [positionCandidate[k].second] != EMPTY) {
@@ -53,14 +54,14 @@ bool computer::isOverlaping(const ships::ship &ship,
     return 0;
 }
 void computer::attack() {
-    std::pair<int, int> attackPositionCandidate;
+    std::pair<uint, uint> attackPositionCandidate;
     do {
         attackPositionCandidate = {randomNumberGenerator(0, ROWS - 1),
                                    randomNumberGenerator(0, COLS - 1)};
     } while (this->isAttemptRepeated(attackPositionCandidate) == true);
     this->bombingAttempts.insert(attackPositionCandidate);
 }
-bool computer::isAttemptRepeated(const std::pair<int, int> &position) const {
+bool computer::isAttemptRepeated(const std::pair<uint, uint> &position) const {
     if (this->bombingAttempts.find(position) != this->bombingAttempts.end()) {
         return true;
     }
