@@ -95,13 +95,9 @@ void player::printHeader() const {
 }
 void player::printSeparator() const {
     for (int i = 0; i < COLS + 1; ++i) {
-        if (i == 0) {
-            std::cout << "───┼";
-        } else if (i == COLS) {
-            std::cout << "───";
-        } else {
-            std::cout << "───┼";
-        }
+        (i == 0)      ? std::cout << "───┼"
+        : (i == COLS) ? std::cout << "───"
+                      : std::cout << "───┼";
     }
     std::cout << std::endl;
 }

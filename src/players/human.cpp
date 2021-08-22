@@ -41,13 +41,11 @@ void human::printGrid() const {
     std::cout << std::endl;
 }
 char human::chooseDirection(const ships::ship &ship) const {
-readDirection:
-    std::cout << "Escolha a direção de '" << ship.getName() << "'(v/h): ";
     char direc;
-    std::cin >> direc;
-    if (direc != 'v' && direc != 'h') {
-        goto readDirection;
-    }
+    do {
+        std::cout << "Escolha a direção de '" << ship.getName() << "'(v/h): ";
+        std::cin >> direc;
+    } while (direc != 'v' && direc != 'h');
     return direc;
 }
 void human::clearShip(ships::ship *ship) {
