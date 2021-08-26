@@ -12,13 +12,13 @@ int randomNumberGenerator(int floor, int ceiling) {
 }
 using namespace players;
 computer::computer() {
-    this->initializeBoard();
+    this->initializeGrid();
     this->initializeShips();
     std::cout << "Inicializando navios do computador\n";
     for (int i = 0; i < TOTAL_SHIPS; ++i) {
         this->ships[i]->setDirection(chooseDirection());
         this->ships[i]->setCells(choosePosition(*this->ships[i]));
-        this->addShipToGrid(*this->ships[i]);
+        this->insertShipInGrid(*this->ships[i]);
     }
 }
 bool computer::chooseDirection() const { return randomNumberGenerator(0, 1); }
@@ -53,18 +53,12 @@ bool computer::isOverlaping(const ships::ship &ship,
     }
     return 0;
 }
-void computer::attack(player &enemy) {
-    std::pair<uint, uint> attackPositionCandidate;
+std::pair<uint, uint> computer::chooseAttackPosition() {
+    std::pair<uint, uint> attackPosition;
     do {
-        attackPositionCandidate = {randomNumberGenerator(0, ROWS - 1),
-                                   randomNumberGenerator(0, COLS - 1)};
-    } while (this->isAttemptRepeated(attackPositionCandidate) == true);
-    this->bombingAttempts.insert(attackPositionCandidate);
-    enemy.wasHit(attackPositionCandidate);
-}
-bool computer::isAttemptRepeated(const std::pair<uint, uint> &position) const {
-    if (this->bombingAttempts.find(position) != this->bombingAttempts.end()) {
-        return true;
-    }
-    return false;
+        attackPosition = {randomNumberGenerator(0, ROWS - 1),
+                          randomNumberGenerator(0, COLS - 1)};
+    } while (this->wasAttacked(attackPosition) == true);
+    this->alreadyAttacked.insert(attackPosition);
+    return attackPosition;
 }

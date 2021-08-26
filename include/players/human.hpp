@@ -3,12 +3,8 @@
 #include "player.hpp"
 namespace players {
 class human : public player {
-  public:
-    human();
-
-    void attack(player &enemy) override;
-
   private:
+    // Track ship placement while user is placing the ships
     void printContructionGrid() const;
 
     void clearShip(ships::ship *ship);
@@ -23,8 +19,15 @@ class human : public player {
 
     bool
     isAttackOutOfBounds(const std::pair<uint, uint> &attackCandidate) const;
-    bool
-    isAttemptRepeated(const std::pair<uint, uint> &position) const override;
+    bool isAttackRepeated(const std::pair<uint, uint> &attackCandidate) const;
+
+    // Remove ship if user wants to relocate it
+    void removeShipFromGrid(ships::ship *ship);
+
+  public:
+    human();
+
+    std::pair<uint, uint> chooseAttackPosition() override;
 };
 } // namespace players
 #endif

@@ -8,16 +8,20 @@
 #include <set>
 #include <string>
 namespace players {
+// Declared outside the class as they are used outside an instance of player
 static constexpr int ROWS = 6;
 static constexpr int COLS = 6;
 class player {
   private:
     static constexpr int SHIP_TYPES = 5;
-    static constexpr int NUM_EACH_SHIP[SHIP_TYPES] = {1, 1, 1, 1, 2};
+    static constexpr int NUM_EACH_TYPE[SHIP_TYPES] = {1, 1, 1, 1, 2};
+    static constexpr int TILES = ROWS * COLS;
+    static constexpr double MAX_OCCUPABLE = 0.8;
 
-    // Lembre-se de inicializar as funções virtuais!
-    // O linkador espera que elas estejam definidas em algum momento do programa
-    // Um jeito de fazer isso é usando esse '= 0'
+    // Check if it's possible to fit all ships in the grid
+    // Uses TILES & MAX_OCCUPABLE
+    bool isThereEnoughSpace() const;
+
     virtual bool isOutOfBounds(const ships::ship &ship,
                                const std::pair<uint, uint> &pos) const = 0;
     virtual bool isOverlaping(const ships::ship &ship,
@@ -26,27 +30,23 @@ class player {
     choosePosition(const ships::ship &ship) const = 0;
 
   protected:
-    static constexpr int TILES = ROWS * COLS;
-    static constexpr double MAX_OCCUPABLE = 0.8;
-
     static constexpr int TOTAL_SHIPS = 6;
-
     static constexpr char EMPTY = ' ';
 
-    // Segundo a wikipédia, o jogo original conta com
-    // 1 carrier, 2 battleships, 3 destroyers, 4 submarines, 5 patrolBoats
-    // (mas isso fica meio chato de colocar no terminal)
     ships::ship *ships[TOTAL_SHIPS];
+    // Tracks attack positions already atttempted
+    // eases the implementation of wasAttacked()
+    std::set<std::pair<uint, uint>> alreadyAttacked;
+    // Tracks positions already hit by the enemy
+    // eases the implementation of wasDamaged()
+    std::set<std::pair<uint, uint>> alreadyDamaged;
 
-    void initializeBoard();
+    // Set every char in the grid to EMPTY
+    void initializeGrid();
+    // Populate "ships" according to SHIP_TYPES & NUM_EACH_TYPE
     void initializeShips();
 
-    bool isThereEnoughSpace() const;
-
-    void addShipToGrid(const ships::ship &ship);
-
-    virtual bool
-    isAttemptRepeated(const std::pair<uint, uint> &position) const = 0;
+    void insertShipInGrid(const ships::ship &ship);
 
     virtual ~player();
 
@@ -64,6 +64,13 @@ class player {
 
     void printHeader() const;
     void printSeparator() const;
+
+    bool wasAttacked(const std::pair<uint, uint> &position) const;
+    bool wasDamaged(const std::pair<uint, uint> &position) const;
+
+    virtual std::pair<uint, uint> chooseAttackPosition() = 0;
+    // Try to match an attack with a cell from a ship, causing damage
+    void takeDamage(const std::pair<uint, uint> &position);
 };
 } // namespace players
 #endif

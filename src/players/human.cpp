@@ -2,14 +2,14 @@
 #include <iostream>
 using namespace players;
 human::human() {
-    this->initializeBoard();
+    this->initializeGrid();
     this->initializeShips();
     for (int i = 0; i < TOTAL_SHIPS; ++i) {
         /* restartPosition: */
         this->printContructionGrid();
         this->ships[i]->setDirection(chooseDirection(*this->ships[i]));
         this->ships[i]->setCells(choosePosition(*this->ships[i]));
-        this->addShipToGrid(*this->ships[i]);
+        this->insertShipInGrid(*this->ships[i]);
         /* this->printGrid(); */
         /* std::cout<<"Você está feliz com a posição atual do barco? (S/n)\n" */
         /*            "Digite 'n' para selecionar uma nova orientação/posição:
@@ -48,7 +48,7 @@ char human::chooseDirection(const ships::ship &ship) const {
     } while (direc != 'v' && direc != 'h');
     return direc;
 }
-void human::clearShip(ships::ship *ship) {
+void human::removeShipFromGrid(ships::ship *ship) {
     std::vector<std::pair<uint, uint>> shipPos = ship->getLocation();
     for (unsigned k = 0; k < shipPos.size(); ++k) {
         this->grid[shipPos[k].first][shipPos[k].second] = EMPTY;
@@ -82,7 +82,6 @@ bool human::isOverlaping(const ships::ship &ship,
     return 0;
 }
 std::pair<uint, uint> human::choosePosition(const ships::ship &ship) const {
-    std::cout << "Escolha a posição do '" << ship.getName() << "': ";
     std::pair<uint, uint> position;
     do {
         std::cin >> position.first >> position.second;
@@ -90,7 +89,7 @@ std::pair<uint, uint> human::choosePosition(const ships::ship &ship) const {
              this->isOverlaping(ship, position) == true);
     return position;
 }
-void human::attack(player &enemy) {
+std::pair<uint, uint> human::chooseAttackPosition() {
     std::pair<uint, uint> attackPosition;
     std::cout << "Escolha onde deseja atacar: ";
     do {
@@ -109,10 +108,9 @@ bool human::isAttackOutOfBounds(
     }
     return true;
 }
-bool human::isAttemptRepeated(const std::pair<uint, uint> &position) const {
-    if (this->bombingAttempts.find(position) != this->bombingAttempts.end()) {
-        std::cout << "Você já atacou nessa posição!\n"
-                     "Por favor, escolha outra posição: ";
+bool human::isAttackRepeated(const std::pair<uint, uint> &position) const {
+    if (this->alreadyAttacked.find(position) != this->alreadyAttacked.end()) {
+        std::cout << "Você já atacou aqui! Escolha outro lugar: ";
         return true;
     }
     return false;

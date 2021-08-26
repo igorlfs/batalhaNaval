@@ -3,10 +3,6 @@
 #include "player.hpp"
 namespace players {
 class computer : public player {
-  public:
-    computer();
-    void attack(player &enemy) override;
-
   private:
     bool chooseDirection() const;
     std::pair<uint, uint>
@@ -16,8 +12,9 @@ class computer : public player {
     bool isOverlaping(const ships::ship &ship,
                       const std::pair<uint, uint> &pos) const override;
 
-    bool
-    isAttemptRepeated(const std::pair<uint, uint> &position) const override;
+  public:
+    computer();
+    std::pair<uint, uint> chooseAttackPosition() override;
 };
 } // namespace players
 #endif
