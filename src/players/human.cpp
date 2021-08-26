@@ -1,5 +1,7 @@
 #include "human.hpp"
+#include "handleInput.hpp"
 #include <iostream>
+#include <regex>
 using namespace players;
 human::human() {
     this->initializeGrid();
@@ -41,19 +43,52 @@ void human::printContructionGrid() const {
     std::cout << std::endl;
 }
 char human::chooseDirection(const ships::ship &ship) const {
-    char direc;
-    do {
-        std::cout << "Escolha a direção de '" << ship.getName() << "'(v/h): ";
-        std::cin >> direc;
-    } while (direc != 'v' && direc != 'h');
-    return direc;
-}
-void human::removeShipFromGrid(ships::ship *ship) {
-    std::vector<std::pair<uint, uint>> shipPos = ship->getLocation();
-    for (unsigned k = 0; k < shipPos.size(); ++k) {
-        this->grid[shipPos[k].first][shipPos[k].second] = EMPTY;
+insertDirectionAgain:
+    try {
+        // regex: a letter between an arbitraty number of spaces
+        std::regex expectedFormat("\\s*\\w\\s*");
+        char direction;
+        std::string readLine;
+        std::cout
+            << "Escolha a direção de " << ship.getName()
+            << "\nTamanho: " << ship.getSize()
+            << "\nVocê pode escolher entre vertical (v) ou horizontal (h): ";
+        std::getline(std::cin, readLine);
+        if (std::cin.eof()) throw Input::interrupt();
+        if (readLine.size() == 0) throw Input::emptyLine();
+        if (!std::regex_match(readLine, expectedFormat))
+            throw Input::invalidDirectionFormat{readLine};
+        std::stringstream ss(readLine);
+        ss >> direction;
+        if (direction != 'v' && direction != 'h')
+            throw Input::invalidDirection{readLine};
+        return direction;
+    } catch (Input::interrupt e) {
+        std::cout << "\n\nA entrada de dados foi interrompida. Saindo.\n\n";
+        exit(1);
+    } catch (Input::emptyLine e) {
+        std::cout << "\nNão foi informado nenhum dado."
+                  << "\nPor favor, insira uma direção.\n\n";
+        goto insertDirectionAgain;
+    } catch (Input::invalidDirectionFormat e) {
+        std::cout << "\nEntrada inválida: " << e.str
+                  << "\nPor favor, insira a direção no seguinte formato: x\n"
+                     "onde 'x' deve ser v ou h\n\n";
+        goto insertDirectionAgain;
+    } catch (Input::invalidDirection e) {
+        std::cout << "\nEntrada inválida: " << e.str
+                  << "\nVocê só pode escolher entre as direções 'v' e 'h'\n\n";
+        goto insertDirectionAgain;
     }
-    ship->clearCells();
+}
+std::pair<uint, uint> human::chooseShipPosition(const ships::ship &ship) const {
+    std::pair<uint, uint> position;
+    std::cout << "Escolha a posição do '" << ship.getName() << "': ";
+    do {
+        std::cin >> position.first >> position.second;
+    } while (this->isOutOfBounds(ship, position) == true ||
+             this->isOverlaping(ship, position) == true);
+    return position;
 }
 bool human::isOutOfBounds(const ships::ship &ship,
                           const std::pair<uint, uint> &pos) const {
