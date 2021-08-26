@@ -6,11 +6,7 @@ class computer : public player {
   private:
     bool chooseDirection() const;
     std::pair<uint, uint>
-    choosePosition(const ships::ship &ship) const override;
-    bool isOutOfBounds(const ships::ship &ship,
-                       const std::pair<uint, uint> &pos) const override;
-    bool isOverlaping(const ships::ship &ship,
-                      const std::pair<uint, uint> &pos) const override;
+    chooseShipPosition(const ships::ship &ship) const override;
 
   public:
     computer();

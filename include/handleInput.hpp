@@ -13,5 +13,10 @@ struct invalidDirectionFormat {
 struct invalidDirection {
     std::string str;
 };
+struct invalidPositionFormat {
+    std::string str;
+};
+struct shipOutOfBounds {};
+struct shipOverlap {};
 } // namespace Input
 #endif

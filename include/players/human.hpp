@@ -8,13 +8,8 @@ class human : public player {
     void printContructionGrid() const;
 
     char chooseDirection(const ships::ship &ship) const;
-    bool isDirectionValid(const std::string &str) const;
     std::pair<uint, uint>
-    choosePosition(const ships::ship &ship) const override;
-    bool isOutOfBounds(const ships::ship &ship,
-                       const std::pair<uint, uint> &pos) const override;
-    bool isOverlaping(const ships::ship &ship,
-                      const std::pair<uint, uint> &pos) const override;
+    chooseShipPosition(const ships::ship &ship) const override;
 
     bool
     isAttackOutOfBounds(const std::pair<uint, uint> &attackCandidate) const;

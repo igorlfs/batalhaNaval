@@ -28,6 +28,25 @@ bool player::isThereEnoughSpace() const {
         return 0;
     }
 }
+bool player::isOutOfBounds(const ships::ship &ship,
+                           const std::pair<uint, uint> &pos) const {
+    return ((ship.getDirection() && ship.getSize() + pos.second > ROWS) ||
+            (!ship.getDirection() && ship.getSize() + pos.first > COLS));
+}
+bool player::isOverlaping(const ships::ship &ship,
+                          const std::pair<uint, uint> &position) const {
+    ships::ship testShip = ship;
+    testShip.setCells(position);
+    std::vector<std::pair<uint, uint>> positionCandidate =
+        testShip.getLocation();
+    for (unsigned k = 0; k < positionCandidate.size(); ++k) {
+        if (this->grid[positionCandidate[k].first]
+                      [positionCandidate[k].second] != EMPTY) {
+            return 1;
+        }
+    }
+    return 0;
+}
 void player::initializeGrid() {
     for (int i = 0; i < ROWS; ++i) {
         for (int j = 0; j < COLS; ++j) {
@@ -84,9 +103,7 @@ player::~player() {
 }
 void player::printHeader() const {
     for (int i = 0; i < COLS + 1; ++i) {
-        (i == 0)      ? std::cout << "  "
-        : (i == COLS) ? std::cout << 'X'
-                      : std::cout << i - 1;
+        (i == 0) ? std::cout << "  " : std::cout << i;
         if (i != COLS) {
             std::cout << " │ ";
         }

@@ -22,18 +22,19 @@ class player {
     // Uses TILES & MAX_OCCUPABLE
     bool isThereEnoughSpace() const;
 
-    virtual bool isOutOfBounds(const ships::ship &ship,
-                               const std::pair<uint, uint> &pos) const = 0;
-    virtual bool isOverlaping(const ships::ship &ship,
-                              const std::pair<uint, uint> &pos) const = 0;
     virtual std::pair<uint, uint>
-    choosePosition(const ships::ship &ship) const = 0;
+    chooseShipPosition(const ships::ship &ship) const = 0;
 
   protected:
     static constexpr int TOTAL_SHIPS = 6;
     static constexpr char EMPTY = ' ';
 
     ships::ship *ships[TOTAL_SHIPS];
+
+    bool isOutOfBounds(const ships::ship &ship,
+                       const std::pair<uint, uint> &pos) const;
+    bool isOverlaping(const ships::ship &ship,
+                      const std::pair<uint, uint> &pos) const;
     // Tracks attack positions already atttempted
     // eases the implementation of wasAttacked()
     std::set<std::pair<uint, uint>> alreadyAttacked;

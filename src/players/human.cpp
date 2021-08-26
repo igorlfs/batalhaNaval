@@ -26,11 +26,10 @@ human::human() {
 }
 void human::printContructionGrid() const {
     this->printHeader();
-    char col = '0';
+    char col = 'A';
     for (int i = 0; i < ROWS; ++i) {
         this->printSeparator();
-        std::cout << ' ' << col;
-        std::cout << " │ ";
+        std::cout << ' ' << col << " │ ";
         for (int j = 0; j < COLS; ++j) {
             std::cout << this->grid[i][j];
             if (j != COLS - 1) {
@@ -43,7 +42,7 @@ void human::printContructionGrid() const {
     std::cout << std::endl;
 }
 char human::chooseDirection(const ships::ship &ship) const {
-insertDirectionAgain:
+insertAgain:
     try {
         // regex: a letter between an arbitraty number of spaces
         std::regex expectedFormat("\\s*\\w\\s*");
@@ -69,60 +68,73 @@ insertDirectionAgain:
     } catch (Input::emptyLine e) {
         std::cout << "\nNão foi informado nenhum dado."
                   << "\nPor favor, insira uma direção.\n\n";
-        goto insertDirectionAgain;
+        goto insertAgain;
     } catch (Input::invalidDirectionFormat e) {
         std::cout << "\nEntrada inválida: " << e.str
                   << "\nPor favor, insira a direção no seguinte formato: x\n"
                      "onde 'x' deve ser v ou h\n\n";
-        goto insertDirectionAgain;
+        goto insertAgain;
     } catch (Input::invalidDirection e) {
         std::cout << "\nEntrada inválida: " << e.str
                   << "\nVocê só pode escolher entre as direções 'v' e 'h'\n\n";
-        goto insertDirectionAgain;
+        goto insertAgain;
     }
 }
+uint parseLetter(const char letter) { return (uint)letter - 65; }
 std::pair<uint, uint> human::chooseShipPosition(const ships::ship &ship) const {
-    std::pair<uint, uint> position;
-    std::cout << "Escolha a posição do '" << ship.getName() << "': ";
-    do {
-        std::cin >> position.first >> position.second;
-    } while (this->isOutOfBounds(ship, position) == true ||
-             this->isOverlaping(ship, position) == true);
-    return position;
-}
-bool human::isOutOfBounds(const ships::ship &ship,
-                          const std::pair<uint, uint> &pos) const {
-    if ((ship.getDirection() && ship.getSize() + pos.second > ROWS) ||
-        (!ship.getDirection() && ship.getSize() + pos.first > COLS)) {
-        std::cout << "Navio não cabe aqui, escolha outra posição: ";
-        return 1;
+insertAgain:
+    try {
+        std::regex expectedFormat("[A-Z][0-9]");
+        std::string readLine;
+        std::cout
+            << "Escolha a posição de " << ship.getName()
+            << "\nTamanho: " << ship.getSize()
+            << "\nUma posição válida é composta por uma letra MAIÚSCULA e um "
+               "número (necessariamente nessa ordem) juntos (sem espaços "
+               "entre eles)\n"
+               "Exemplos de posições válidas são: A2, C5, D4\n";
+        std::getline(std::cin, readLine);
+        if (std::cin.eof()) throw Input::interrupt();
+        if (readLine.size() == 0) throw Input::emptyLine();
+        if (!std::regex_match(readLine, expectedFormat))
+            throw Input::invalidPositionFormat{readLine};
+        std::stringstream ss(readLine);
+        char row;
+        uint column;
+        ss >> row >> column;
+        std::pair<uint, uint> position = {parseLetter(row), column - 1};
+        if (((ship.getDirection() && ship.getSize() + position.second > ROWS) ||
+             (!ship.getDirection() && ship.getSize() + position.first > COLS)))
+            throw Input::shipOutOfBounds();
+        if (isOverlaping(ship, position)) throw Input::shipOverlap();
+        return position;
+    } catch (Input::interrupt e) {
+        std::cout << "\n\nA entrada de dados foi interrompida. Saindo.\n\n";
+        exit(1);
+    } catch (Input::emptyLine e) {
+        std::cout << "\nNão foi informado nenhum dado."
+                  << "\nPor favor, insira uma posição.\n\n";
+        goto insertAgain;
+    } catch (Input::invalidPositionFormat e) {
+        std::cout << "\nEntrada inválida: " << e.str
+                  << "\nPor favor, atente-se aos exemplos de entrada\n\n";
+        goto insertAgain;
+    } catch (Input::shipOutOfBounds e) {
+        std::cout
+            << "\nNavio é muito grande para ser inserido nesta posição.\n\n";
+        goto insertAgain;
+    } catch (Input::shipOverlap e) {
+        std::cout
+            << "\nVocê não pode inserir um navio em cima de outro navio.\n\n";
+        goto insertAgain;
     }
-    return 0;
 }
-bool human::isOverlaping(const ships::ship &ship,
-                         const std::pair<uint, uint> &pos) const {
-    ships::ship testShip = ship;
-    testShip.setCells(pos);
-    std::vector<std::pair<uint, uint>> positionCandidate =
-        testShip.getLocation();
-    for (unsigned k = 0; k < positionCandidate.size(); ++k) {
-        if (this->grid[positionCandidate[k].first]
-                      [positionCandidate[k].second] != EMPTY) {
-            std::cout
-                << "Você não pode inserir um navio em cima de outro navio.\n"
-                   "Por favor, escolha outra posição: ";
-            return 1;
-        }
+void human::removeShipFromGrid(ships::ship *ship) {
+    std::vector<std::pair<uint, uint>> shipPos = ship->getLocation();
+    for (unsigned k = 0; k < shipPos.size(); ++k) {
+        this->grid[shipPos[k].first][shipPos[k].second] = EMPTY;
     }
-    return 0;
-}
-std::pair<uint, uint> human::choosePosition(const ships::ship &ship) const {
-    std::pair<uint, uint> position;
-    do {
-        std::cin >> position.first >> position.second;
-    } while (this->isOutOfBounds(ship, position) == true ||
-             this->isOverlaping(ship, position) == true);
-    return position;
+    ship->clearCells();
 }
 std::pair<uint, uint> human::chooseAttackPosition() {
     std::pair<uint, uint> attackPosition;
