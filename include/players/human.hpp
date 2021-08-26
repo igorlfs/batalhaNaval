@@ -7,9 +7,8 @@ class human : public player {
     // Track ship placement while user is placing the ships
     void printContructionGrid() const;
 
-    void clearShip(ships::ship *ship);
-
     char chooseDirection(const ships::ship &ship) const;
+    bool isDirectionValid(const std::string &str) const;
     std::pair<uint, uint>
     choosePosition(const ships::ship &ship) const override;
     bool isOutOfBounds(const ships::ship &ship,
