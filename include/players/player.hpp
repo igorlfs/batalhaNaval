@@ -30,11 +30,6 @@ class player {
     static constexpr char EMPTY = ' ';
 
     ships::ship *ships[TOTAL_SHIPS];
-
-    bool isOutOfBounds(const ships::ship &ship,
-                       const std::pair<uint, uint> &pos) const;
-    bool isOverlaping(const ships::ship &ship,
-                      const std::pair<uint, uint> &pos) const;
     // Tracks attack positions already atttempted
     // eases the implementation of wasAttacked()
     std::set<std::pair<uint, uint>> alreadyAttacked;
@@ -46,6 +41,13 @@ class player {
     void initializeGrid();
     // Populate "ships" according to SHIP_TYPES & NUM_EACH_TYPE
     void initializeShips();
+
+    // Check if a ship overflows the grid in a given position
+    bool isOutOfBounds(const ships::ship &ship,
+                       const std::pair<uint, uint> &pos) const;
+    // Check if a ship overlaps another ship
+    bool isOverlaping(const ships::ship &ship,
+                      const std::pair<uint, uint> &pos) const;
 
     void insertShipInGrid(const ships::ship &ship);
 

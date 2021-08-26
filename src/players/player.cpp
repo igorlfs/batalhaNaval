@@ -8,7 +8,7 @@ bool player::isThereEnoughSpace() const {
                                  ships::PATROL_BOAT_SIZE};
     int occupableTiles = 0;
     for (int i = 0; i < SHIP_TYPES; ++i) {
-        occupableTiles += shipSizes[i] * NUM_EACH_SHIP[i];
+        occupableTiles += shipSizes[i] * NUM_EACH_TYPE[i];
     }
     // It's possible to have occupableTiles ~ TILES and still get an untilable
     // grid. This happens because you can create 'vortexes' where no ship would
@@ -28,25 +28,6 @@ bool player::isThereEnoughSpace() const {
         return 0;
     }
 }
-bool player::isOutOfBounds(const ships::ship &ship,
-                           const std::pair<uint, uint> &pos) const {
-    return ((ship.getDirection() && ship.getSize() + pos.second > ROWS) ||
-            (!ship.getDirection() && ship.getSize() + pos.first > COLS));
-}
-bool player::isOverlaping(const ships::ship &ship,
-                          const std::pair<uint, uint> &position) const {
-    ships::ship testShip = ship;
-    testShip.setCells(position);
-    std::vector<std::pair<uint, uint>> positionCandidate =
-        testShip.getLocation();
-    for (unsigned k = 0; k < positionCandidate.size(); ++k) {
-        if (this->grid[positionCandidate[k].first]
-                      [positionCandidate[k].second] != EMPTY) {
-            return 1;
-        }
-    }
-    return 0;
-}
 void player::initializeGrid() {
     for (int i = 0; i < ROWS; ++i) {
         for (int j = 0; j < COLS; ++j) {
@@ -57,13 +38,13 @@ void player::initializeGrid() {
 void player::initializeShips() {
     int sumEachShip = 0;
     for (int i = 0; i < SHIP_TYPES; ++i) {
-        sumEachShip += NUM_EACH_SHIP[i];
+        sumEachShip += NUM_EACH_TYPE[i];
     }
     assert(sumEachShip == TOTAL_SHIPS);
     assert(this->isThereEnoughSpace());
     int shipInitializer = 0;
     for (int i = 0; i < SHIP_TYPES; ++i) {
-        for (int j = 0; j < NUM_EACH_SHIP[i]; ++j) {
+        for (int j = 0; j < NUM_EACH_TYPE[i]; ++j) {
             switch (i) {
             case 0:
                 this->ships[shipInitializer] = new ships::carrier;
@@ -88,6 +69,25 @@ void player::initializeShips() {
         }
     }
     assert(shipInitializer == TOTAL_SHIPS);
+}
+bool player::isOutOfBounds(const ships::ship &ship,
+                           const std::pair<uint, uint> &pos) const {
+    return ((ship.getDirection() && ship.getSize() + pos.second > ROWS) ||
+            (!ship.getDirection() && ship.getSize() + pos.first > COLS));
+}
+bool player::isOverlaping(const ships::ship &ship,
+                          const std::pair<uint, uint> &position) const {
+    ships::ship testShip = ship;
+    testShip.setCells(position);
+    std::vector<std::pair<uint, uint>> positionCandidate =
+        testShip.getLocation();
+    for (unsigned k = 0; k < positionCandidate.size(); ++k) {
+        if (this->grid[positionCandidate[k].first]
+                      [positionCandidate[k].second] != EMPTY) {
+            return 1;
+        }
+    }
+    return 0;
 }
 void player::insertShipInGrid(const ships::ship &ship) {
     std::vector<std::pair<uint, uint>> shipPos = ship.getLocation();
