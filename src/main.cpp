@@ -18,11 +18,19 @@ int main() {
     // Explain how to play the game
     players::human person;
     players::computer cpu;
-    while (1) {
+    for (int i = 0; i < players::TILES; ++i) {
         printTrackingGrid(cpu, person);
-        person.attack(cpu);
-        cpu.attack(person);
+        cpu.takeDamage(person.chooseAttackPosition());
+        if (cpu.isDead()) {
+            std::cout << "Computador perdeu!\n";
+            break;
+        }
+        person.takeDamage(cpu.chooseAttackPosition());
         printPrimaryGrid(person, cpu);
+        if (person.isDead()) {
+            std::cout << "Jogador perdeu!\n";
+            break;
+        }
     }
     return 0;
 }

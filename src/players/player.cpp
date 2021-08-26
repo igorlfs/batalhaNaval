@@ -108,16 +108,23 @@ bool player::wasAttacked(const std::pair<uint, uint> &position) const {
 bool player::wasDamaged(const std::pair<uint, uint> &position) const {
     return (this->alreadyDamaged.find(position) != this->alreadyDamaged.end());
 }
-void player::takeDamage(const std::pair<uint, uint> &attackPos) {
-    for (int i = 0; i < TOTAL_SHIPS; ++i) {
+void player::takeDamage(const std::pair<uint, uint> &attack) {
+    for (uint i = 0; i < TOTAL_SHIPS; ++i) {
         std::vector<std::pair<uint, uint>> location =
             this->ships[i]->getLocation();
         for (uint k = 0; k < this->ships[i]->getSize(); ++k) {
-            if (location[k].first == attackPos.first &&
-                location[k].second == attackPos.second) {
-                this->ships[i]->bombCell(attackPos);
-                this->hitByTheEnemey.insert(attackPos);
+            if (location[k] == attack) {
+                this->alreadyDamaged.insert(attack);
+                this->ships[i]->bombCell(attack);
+                this->ships[i]->wasDestroyed();
             }
         }
     }
+}
+bool player::isDead() const {
+    uint lostShips = 0;
+    for (uint i = 0; i < TOTAL_SHIPS; ++i) {
+        if (this->ships[i]->getState()) lostShips++;
+    }
+    return (lostShips == TOTAL_SHIPS);
 }
