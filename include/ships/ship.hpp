@@ -10,7 +10,7 @@ class ship {
     int size;
     std::string name;
     bool direction;
-    // A cell is a unit (ie, a square in a grid) from a ship
+    // A cell is an unit (ie, a square in a grid) from a ship
     // Each cell can be either bombed (1) or nom-bombed (0)
     std::map<std::pair<uint, uint>, bool> cells;
     bool isDestroyed{0};
