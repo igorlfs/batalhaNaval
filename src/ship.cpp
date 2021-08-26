@@ -6,7 +6,6 @@ void ship::setDirection(const char &direction) {
     assert(direction == 'v' || direction == 'h');
     (direction == 'h') ? this->direction = 1 : this->direction = 0;
 }
-void ship::setDirection(const bool &direction) { this->direction = direction; }
 void ship::setCells(const std::pair<uint, uint> &position) {
     if (this->direction) {
         for (int i = 0; i < this->size; ++i) {
@@ -25,7 +24,12 @@ std::vector<std::pair<uint, uint>> ship::getLocation() const {
     }
     return location;
 }
-void ship::bombCell(const std::pair<uint, uint> position) {
-    this->cells[{position.first, position.second}] = 1;
+void ship::wasDestroyed() {
+    int damageTaken = 0;
+    for (auto i : this->cells)
+        if (i.second) damageTaken++;
+    if (damageTaken == this->size) {
+        this->isDestroyed = 1;
+        std::cout << this->name << " foi destruído.\n";
+    }
 }
-void ship::clearCells() { this->cells.clear(); }
