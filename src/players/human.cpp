@@ -121,10 +121,12 @@ insertAgain:
         goto insertAgain;
     } catch (Input::shipOutOfBounds e) {
         std::cout
-            << "\nNavio é muito grande para ser inserido nesta posição.\n\n";
+            << "\nEntrada inválida: " << e.str
+            << "\nO navio é muito grande para ser inserido nesta posição.\n\n";
         goto insertAgain;
     } catch (Input::shipOverlap e) {
         std::cout
+            << "\nEntrada inválida: " << e.str
             << "\nVocê não pode inserir um navio em cima de outro navio.\n\n";
         goto insertAgain;
     }
