@@ -13,7 +13,6 @@ using namespace players;
 computer::computer() {
     this->initializeGrid();
     this->initializeShips();
-    std::cout << "Inicializando navios do computador\n";
     for (int i = 0; i < TOTAL_SHIPS; ++i) {
         this->ships[i]->setDirection(chooseDirection());
         this->ships[i]->setCells(chooseShipPosition(*this->ships[i]));

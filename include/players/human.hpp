@@ -11,10 +11,6 @@ class human : public player {
     std::pair<uint, uint>
     chooseShipPosition(const ships::ship &ship) const override;
 
-    bool
-    isAttackOutOfBounds(const std::pair<uint, uint> &attackCandidate) const;
-    bool isAttackRepeated(const std::pair<uint, uint> &attackCandidate) const;
-
     // Remove ship if user wants to relocate it
     void removeShipFromGrid(ships::ship *ship);
 

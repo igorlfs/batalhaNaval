@@ -22,5 +22,11 @@ struct shipOutOfBounds {
 struct shipOverlap {
     std::string str;
 };
+struct attackOutOfBounds {
+    std::string str;
+};
+struct attackRepeated {
+    std::string str;
+};
 } // namespace Input
 #endif

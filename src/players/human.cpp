@@ -10,7 +10,7 @@ human::human() {
         /* restartPosition: */
         this->printContructionGrid();
         this->ships[i]->setDirection(chooseDirection(*this->ships[i]));
-        this->ships[i]->setCells(choosePosition(*this->ships[i]));
+        this->ships[i]->setCells(chooseShipPosition(*this->ships[i]));
         this->insertShipInGrid(*this->ships[i]);
         /* this->printGrid(); */
         /* std::cout<<"Você está feliz com a posição atual do barco? (S/n)\n" */
@@ -84,14 +84,15 @@ uint parseLetter(const char letter) { return (uint)letter - 65; }
 std::pair<uint, uint> human::chooseShipPosition(const ships::ship &ship) const {
 insertAgain:
     try {
-        std::regex expectedFormat("[A-Z][0-9]");
+        std::regex expectedFormat("[A-Z][1-9][0-9]*");
         std::string readLine;
         std::cout
             << "Escolha a posição de " << ship.getName()
             << "\nTamanho: " << ship.getSize()
             << "\nUma posição válida é composta por uma letra MAIÚSCULA e um "
                "número (necessariamente nessa ordem) juntos (sem espaços "
-               "entre eles)\n"
+               "entre eles).\n"
+               "O número deve ser natural (excluindo o 0).\n"
                "Exemplos de posições válidas são: A2, C5, D4\n";
         std::getline(std::cin, readLine);
         if (std::cin.eof()) throw Input::interrupt();
@@ -103,10 +104,9 @@ insertAgain:
         uint column;
         ss >> row >> column;
         std::pair<uint, uint> position = {parseLetter(row), column - 1};
-        if (((ship.getDirection() && ship.getSize() + position.second > ROWS) ||
-             (!ship.getDirection() && ship.getSize() + position.first > COLS)))
-            throw Input::shipOutOfBounds();
-        if (isOverlaping(ship, position)) throw Input::shipOverlap();
+        if (isOutOfBounds(ship, position))
+            throw Input::shipOutOfBounds{readLine};
+        if (isOverlaping(ship, position)) throw Input::shipOverlap{readLine};
         return position;
     } catch (Input::interrupt e) {
         std::cout << "\n\nA entrada de dados foi interrompida. Saindo.\n\n";
@@ -117,7 +117,7 @@ insertAgain:
         goto insertAgain;
     } catch (Input::invalidPositionFormat e) {
         std::cout << "\nEntrada inválida: " << e.str
-                  << "\nPor favor, atente-se aos exemplos de entrada\n\n";
+                  << "\nPor favor, atente-se aos exemplos de entrada.\n\n";
         goto insertAgain;
     } catch (Input::shipOutOfBounds e) {
         std::cout
@@ -139,28 +139,45 @@ void human::removeShipFromGrid(ships::ship *ship) {
     ship->clearCells();
 }
 std::pair<uint, uint> human::chooseAttackPosition() {
-    std::pair<uint, uint> attackPosition;
-    std::cout << "Escolha onde deseja atacar: ";
-    do {
-        std::cin >> attackPosition.first >> attackPosition.second;
-    } while (isAttackOutOfBounds(attackPosition) == false ||
-             isAttemptRepeated(attackPosition) == true);
-    bombingAttempts.insert(attackPosition);
-    enemy.wasHit(attackPosition);
-}
-bool human::isAttackOutOfBounds(
-    const std::pair<uint, uint> &attackCandidate) const {
-    if (attackCandidate.first >= ROWS || attackCandidate.second >= COLS) {
-        std::cout << "Oops. Essa posição não está no campo inimigo\n"
-                     "Escolha outra posição: ";
-        return false;
+insertAgain:
+    try {
+        std::regex expectedFormat("[A-Z][1-9][0-9]*");
+        std::string readLine;
+        std::cout << "Escolha em qual posição deseja atacar: ";
+        std::getline(std::cin, readLine);
+        if (std::cin.eof()) throw Input::interrupt();
+        if (readLine.size() == 0) throw Input::emptyLine();
+        if (!std::regex_match(readLine, expectedFormat))
+            throw Input::invalidPositionFormat{readLine};
+        std::stringstream ss(readLine);
+        char row;
+        uint column;
+        ss >> row >> column;
+        std::pair<uint, uint> position = {parseLetter(row), column - 1};
+        if (position.first >= ROWS || position.second >= COLS)
+            throw Input::attackOutOfBounds{readLine};
+        if (this->alreadyAttacked.find(position) != this->alreadyAttacked.end())
+            throw Input::attackRepeated{readLine};
+        this->alreadyAttacked.insert(position);
+        return position;
+    } catch (Input::interrupt e) {
+        std::cout << "\n\nA entrada de dados foi interrompida. Saindo.\n\n";
+        exit(1);
+    } catch (Input::emptyLine e) {
+        std::cout << "\nNão foi informado nenhum dado."
+                  << "\nPor favor, insira uma posição.\n\n";
+        goto insertAgain;
+    } catch (Input::invalidPositionFormat e) {
+        std::cout << "\nEntrada inválida: " << e.str
+                  << "\nPor favor, atente-se aos exemplos de entrada.\n\n";
+        goto insertAgain;
+    } catch (Input::attackOutOfBounds e) {
+        std::cout << "\nEntrada inválida: " << e.str
+                  << "\nOops. Essa posição não está no campo inimigo.\n\n";
+        goto insertAgain;
+    } catch (Input::attackRepeated e) {
+        std::cout << "\nEntrada inválida: " << e.str
+                  << "\nOops. Você já atacou essa posição.\n\n";
+        goto insertAgain;
     }
-    return true;
-}
-bool human::isAttackRepeated(const std::pair<uint, uint> &position) const {
-    if (this->alreadyAttacked.find(position) != this->alreadyAttacked.end()) {
-        std::cout << "Você já atacou aqui! Escolha outro lugar: ";
-        return true;
-    }
-    return false;
 }
