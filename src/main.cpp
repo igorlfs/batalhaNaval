@@ -14,10 +14,10 @@ void waitForEnter();
 int main() {
     // TODO:
     //
-    // Simplify getting position
     // Explain how to play the game
     // change namespaces to use Uppercase
-    // Fix magic chars; use true/false insted of 1/0;
+    // Improve docs; maybe test?
+    // Fix magic chars/numbers; use true/false insted of 1/0;
     players::human person;
     players::computer cpu;
     for (int i = 0; i < players::TILES; ++i) {

@@ -16,17 +16,9 @@ struct invalidDirection {
 struct invalidPositionFormat {
     std::string str;
 };
-struct shipOutOfBounds {
-    std::string str;
-};
-struct shipOverlap {
-    std::string str;
-};
-struct attackOutOfBounds {
-    std::string str;
-};
-struct attackRepeated {
-    std::string str;
-};
+struct shipOutOfBounds {};
+struct shipOverlap {};
+struct attackOutOfBounds {};
+struct attackRepeated {};
 } // namespace Input
 #endif
