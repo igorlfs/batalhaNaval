@@ -1,3 +1,4 @@
+#include "colors.hpp"
 #include "computer.hpp"
 #include "handleInput.hpp"
 #include "human.hpp"
@@ -5,13 +6,15 @@
 // Remove these functions from main and implement them as member functions
 void printTrackingGrid(const players::player &tracked,
                        const players::player &traking);
+// Might wanna find a hacky way to merge this function with
+// printContructionGrid()
 void printPrimaryGrid(const players::player &defender,
                       const players::player &enemy);
 void waitForEnter();
 int main() {
     // TODO:
     //
-    // Colors
+    // Simplify getting position
     // Explain how to play the game
     // change namespaces to use Uppercase
     // Fix magic chars; use true/false insted of 1/0;
@@ -37,41 +40,58 @@ void printTrackingGrid(const players::player &tracked,
                        const players::player &traking) {
     std::cout << "\nIsso é o que você já sabe do campo inimigo:\n\n";
     tracked.printHeader();
-    char col = 'A';
+    char column = 'A';
     for (int i = 0; i < players::ROWS; ++i) {
         tracked.printSeparator();
-        std::cout << ' ' << col << " │ ";
+        std::cout << ' ' << column << Color::Modifier(Color::FG_CYAN) << " │ "
+                  << Color::RESET;
         for (int j = 0; j < players::COLS; ++j) {
             if (traking.wasAttacked({i, j})) {
-                (tracked.wasDamaged({i, j})) ? std::cout << 'H'
-                                             : std::cout << 'X';
+                (tracked.wasDamaged({i, j}))
+                    ? std::cout << Color::Modifier(Color::FG_GREEN) << 'H'
+                                << Color::RESET
+                    : std::cout << Color::Modifier(Color::FG_RED) << 'X'
+                                << Color::RESET;
             } else
-                std::cout << 'O'; // Use empty char?
-            if (j != players::COLS - 1) std::cout << " │ ";
+                std::cout << Color::Modifier(Color::FG_BLUE) << players::EMPTY
+                          << Color::RESET;
+            if (j != players::COLS - 1)
+                std::cout << Color::Modifier(Color::FG_CYAN) << " │ "
+                          << Color::RESET;
         }
-        ++col;
-        std::cout << std::endl;
+        ++column;
+        std::cout.put('\n');
     }
-    waitForEnter();
 }
 void printPrimaryGrid(const players::player &person,
                       const players::player &enemy) {
     std::cout << "\nO inimigo te atacou!\nSeu campo está assim agora:\n\n";
     person.printHeader();
-    char col = 'A';
+    char column = 'A';
     for (int i = 0; i < players::ROWS; ++i) {
         person.printSeparator();
-        std::cout << ' ' << col << " │ ";
+        std::cout << ' ' << column << Color::Modifier(Color::FG_CYAN) << " │ "
+                  << Color::RESET;
         for (int j = 0; j < players::COLS; ++j) {
             if (enemy.wasAttacked({i, j})) {
-                (person.wasDamaged({i, j})) ? std::cout << 'H'
-                                            : std::cout << 'X';
-            } else
-                std::cout << person.grid[i][j];
-            if (j != players::COLS - 1) std::cout << " │ ";
+                (person.wasDamaged({i, j}))
+                    ? std::cout << Color::Modifier(Color::FG_GREEN) << 'H'
+                                << Color::RESET
+                    : std::cout << Color::Modifier(Color::FG_RED) << 'X'
+                                << Color::RESET;
+            } else if (person.grid[i][j] == players::EMPTY) {
+                std::cout << Color::Modifier(Color::FG_BLUE) << players::EMPTY
+                          << Color::RESET;
+            } else {
+                std::cout << Color::Modifier(Color::FG_YELLOW)
+                          << person.grid[i][j] << Color::RESET;
+            }
+            if (j != players::COLS - 1)
+                std::cout << Color::Modifier(Color::FG_CYAN) << " │ "
+                          << Color::RESET;
         }
-        ++col;
-        std::cout << std::endl;
+        ++column;
+        std::cout.put('\n');
     }
     waitForEnter();
 }

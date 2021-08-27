@@ -1,4 +1,5 @@
 #include "player.hpp"
+#include "colors.hpp"
 #include <assert.h>
 #include <iostream>
 using namespace players;
@@ -37,9 +38,7 @@ void player::initializeGrid() {
 }
 void player::initializeShips() {
     int sumEachShip = 0;
-    for (int i = 0; i < SHIP_TYPES; ++i) {
-        sumEachShip += NUM_EACH_TYPE[i];
-    }
+    for (int i = 0; i < SHIP_TYPES; ++i) sumEachShip += NUM_EACH_TYPE[i];
     assert(sumEachShip == TOTAL_SHIPS);
     assert(this->isThereEnoughSpace());
     int shipInitializer = 0;
@@ -105,18 +104,22 @@ void player::printHeader() const {
     for (int i = 0; i < COLS + 1; ++i) {
         (i == 0) ? std::cout << "  " : std::cout << i;
         if (i != COLS) {
-            std::cout << " │ ";
+            std::cout << Color::Modifier(Color::FG_CYAN) << " │ "
+                      << Color::RESET;
         }
     }
-    std::cout << std::endl;
+    std::cout.put('\n');
 }
 void player::printSeparator() const {
     for (int i = 0; i < COLS + 1; ++i) {
-        (i == 0)      ? std::cout << "───┼"
-        : (i == COLS) ? std::cout << "───"
-                      : std::cout << "───┼";
+        (i == 0) ? std::cout << Color::Modifier(Color::FG_CYAN) << "───┼"
+                             << Color::RESET
+        : (i == COLS) ? std::cout << Color::Modifier(Color::FG_CYAN) << "───"
+                                  << Color::RESET
+                      : std::cout << Color::Modifier(Color::FG_CYAN) << "───┼"
+                                  << Color::RESET;
     }
-    std::cout << std::endl;
+    std::cout.put('\n');
 }
 bool player::wasAttacked(const std::pair<uint, uint> &position) const {
     return (this->alreadyAttacked.find(position) !=

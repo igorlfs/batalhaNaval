@@ -9,9 +9,13 @@
 #include <string>
 namespace players {
 // Declared outside the class as they are used outside an instance of player
+// Might wanna change that
 static constexpr int ROWS = 6;
+// The game may not look as good with more than 8 columns
+// as it currently expects a single char when priting the header
 static constexpr int COLS = 6;
 static constexpr int TILES = ROWS * COLS;
+static constexpr char EMPTY = 'O';
 class player {
   private:
     static constexpr int SHIP_TYPES = 5;
@@ -27,7 +31,6 @@ class player {
 
   protected:
     static constexpr int TOTAL_SHIPS = 6;
-    static constexpr char EMPTY = ' ';
 
     ships::ship *ships[TOTAL_SHIPS];
     // Tracks attack positions already atttempted
@@ -54,16 +57,7 @@ class player {
     virtual ~player();
 
   public:
-    char grid[ROWS][COLS];
-
-    virtual void attack(player &enemy) = 0;
-
-    std::set<std::pair<uint, uint>> bombingAttempts;
-    bool wasAnAttempt(const std::pair<uint, uint> &cell) const;
-
-    void wasHit(const std::pair<uint, uint> &position);
-    std::set<std::pair<uint, uint>> hitByTheEnemey;
-    bool isHit(const std::pair<uint, uint> &cell) const;
+    char grid[ROWS][COLS]; // TODO: should use getters instead of being a public
 
     void printHeader() const;
     void printSeparator() const;

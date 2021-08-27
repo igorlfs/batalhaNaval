@@ -5,7 +5,7 @@ namespace ships {
 static constexpr int DESTROYER_SIZE = 3;
 class destroyer : public ship {
   public:
-    destroyer() : ship(DESTROYER_SIZE, "destroyer"){};
+    destroyer() : ship(DESTROYER_SIZE, "Destroyer"){};
 };
 } // namespace ships
 #endif

@@ -1,4 +1,5 @@
 #include "human.hpp"
+#include "colors.hpp"
 #include "handleInput.hpp"
 #include <iostream>
 #include <regex>
@@ -29,17 +30,23 @@ void human::printContructionGrid() const {
     char col = 'A';
     for (int i = 0; i < ROWS; ++i) {
         this->printSeparator();
-        std::cout << ' ' << col << " │ ";
+        std::cout << ' ' << col << Color::Modifier(Color::FG_CYAN) << " │ "
+                  << Color::RESET;
         for (int j = 0; j < COLS; ++j) {
-            std::cout << this->grid[i][j];
+            (this->grid[i][j] == EMPTY)
+                ? std::cout << Color::Modifier(Color::FG_BLUE) << EMPTY
+                            << Color::RESET
+                : std::cout << Color::Modifier(Color::FG_YELLOW)
+                            << this->grid[i][j] << Color::RESET;
             if (j != COLS - 1) {
-                std::cout << " │ ";
+                std::cout << Color::Modifier(Color::FG_CYAN) << " │ "
+                          << Color::RESET;
             }
         }
         ++col;
-        std::cout << std::endl;
+        std::cout.put('\n');
     }
-    std::cout << std::endl;
+    std::cout.put('\n');
 }
 char human::chooseDirection(const ships::ship &ship) const {
 insertAgain:
@@ -63,20 +70,28 @@ insertAgain:
             throw Input::invalidDirection{readLine};
         return direction;
     } catch (Input::interrupt e) {
-        std::cout << "\n\nA entrada de dados foi interrompida. Saindo.\n\n";
+        std::cout << Color::Modifier(Color::FG_RED)
+                  << "\n\nA entrada de dados foi interrompida. Saindo.\n\n"
+                  << Color::RESET;
         exit(1);
     } catch (Input::emptyLine e) {
-        std::cout << "\nNão foi informado nenhum dado."
-                  << "\nPor favor, insira uma direção.\n\n";
+        std::cout << Color::Modifier(Color::FG_RED)
+                  << "\nNão foi informado nenhum dado."
+                  << "\nPor favor, insira uma direção.\n\n"
+                  << Color::RESET;
         goto insertAgain;
     } catch (Input::invalidDirectionFormat e) {
         std::cout << "\nEntrada inválida: " << e.str
+                  << Color::Modifier(Color::FG_RED)
                   << "\nPor favor, insira a direção no seguinte formato: x\n"
-                     "onde 'x' deve ser v ou h\n\n";
+                     "onde 'x' deve ser v ou h\n\n"
+                  << Color::RESET;
         goto insertAgain;
     } catch (Input::invalidDirection e) {
         std::cout << "\nEntrada inválida: " << e.str
-                  << "\nVocê só pode escolher entre as direções 'v' e 'h'\n\n";
+                  << Color::Modifier(Color::FG_RED)
+                  << "\nVocê só pode escolher entre as direções 'v' e 'h'\n\n"
+                  << Color::RESET;
         goto insertAgain;
     }
 }
