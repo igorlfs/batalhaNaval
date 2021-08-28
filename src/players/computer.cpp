@@ -9,7 +9,7 @@ int randomNumberGenerator(int floor, int ceiling) {
                                                                   ceiling);
     return dist(rng);
 }
-using namespace players;
+using namespace Players;
 computer::computer() {
     this->initializeGrid();
     this->initializeShips();
@@ -21,7 +21,7 @@ computer::computer() {
 }
 bool computer::chooseDirection() const { return randomNumberGenerator(0, 1); }
 std::pair<uint, uint>
-computer::chooseShipPosition(const ships::ship &ship) const {
+computer::chooseShipPosition(const Ships::ship &ship) const {
     std::pair<uint, uint> position;
     do {
         position = {randomNumberGenerator(0, ROWS - 1),

@@ -3,7 +3,7 @@
 #include "handleInput.hpp"
 #include <iostream>
 #include <regex>
-using namespace players;
+using namespace Players;
 human::human() {
     this->initializeGrid();
     this->initializeShips();
@@ -48,7 +48,7 @@ void human::printContructionGrid() const {
     }
     std::cout.put('\n');
 }
-char human::chooseDirection(const ships::ship &ship) const {
+char human::chooseDirection(const Ships::ship &ship) const {
 insertAgain:
     try {
         // regex: a letter between an arbitraty number of spaces
@@ -116,7 +116,7 @@ insertPositionAgain:
         goto insertPositionAgain;
     }
 }
-std::pair<uint, uint> human::chooseShipPosition(const ships::ship &ship) const {
+std::pair<uint, uint> human::chooseShipPosition(const Ships::ship &ship) const {
     std::cout << "Escolha a posição de " << ship.getName()
               << "\nTamanho: " << ship.getSize()
               << "\nUma posição válida é composta por uma letra MAIÚSCULA e um "
@@ -140,7 +140,7 @@ insertAgain:
         goto insertAgain;
     }
 }
-void human::removeShipFromGrid(ships::ship *ship) {
+void human::removeShipFromGrid(Ships::ship *ship) {
     std::vector<std::pair<uint, uint>> shipPos = ship->getLocation();
     for (unsigned k = 0; k < shipPos.size(); ++k) {
         this->grid[shipPos[k].first][shipPos[k].second] = EMPTY;

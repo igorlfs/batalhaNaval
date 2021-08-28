@@ -7,7 +7,7 @@
 #include "submarine.hpp"
 #include <set>
 #include <string>
-namespace players {
+namespace Players {
 // Declared outside the class as they are used outside an instance of player
 // Might wanna change that
 static constexpr int ROWS = 6;
@@ -27,12 +27,12 @@ class player {
     bool isThereEnoughSpace() const;
 
     virtual std::pair<uint, uint>
-    chooseShipPosition(const ships::ship &ship) const = 0;
+    chooseShipPosition(const Ships::ship &ship) const = 0;
 
   protected:
     static constexpr int TOTAL_SHIPS = 6;
 
-    ships::ship *ships[TOTAL_SHIPS];
+    Ships::ship *ships[TOTAL_SHIPS];
     // Tracks attack positions already atttempted
     // eases the implementation of wasAttacked()
     std::set<std::pair<uint, uint>> alreadyAttacked;
@@ -46,13 +46,13 @@ class player {
     void initializeShips();
 
     // Check if a ship overflows the grid in a given position
-    bool isOutOfBounds(const ships::ship &ship,
+    bool isOutOfBounds(const Ships::ship &ship,
                        const std::pair<uint, uint> &pos) const;
     // Check if a ship overlaps another ship
-    bool isOverlaping(const ships::ship &ship,
+    bool isOverlaping(const Ships::ship &ship,
                       const std::pair<uint, uint> &pos) const;
 
-    void insertShipInGrid(const ships::ship &ship);
+    void insertShipInGrid(const Ships::ship &ship);
 
     virtual ~player();
 
@@ -70,5 +70,5 @@ class player {
     void takeDamage(const std::pair<uint, uint> &position);
     bool isDead() const;
 };
-} // namespace players
+} // namespace Players
 #endif

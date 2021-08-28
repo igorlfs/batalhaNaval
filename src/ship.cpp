@@ -1,7 +1,7 @@
 #include "ship.hpp"
 #include <assert.h>
 #include <iostream>
-using namespace ships;
+using namespace Ships;
 void ship::setDirection(const char &direction) {
     assert(direction == 'v' || direction == 'h');
     (direction == 'h') ? this->direction = 1 : this->direction = 0;

@@ -2,11 +2,11 @@
 #include "colors.hpp"
 #include <assert.h>
 #include <iostream>
-using namespace players;
+using namespace Players;
 bool player::isThereEnoughSpace() const {
-    int shipSizes[SHIP_TYPES] = {ships::CARRIER_SIZE, ships::BATTLESHIP_SIZE,
-                                 ships::DESTROYER_SIZE, ships::SUBMARINE_SIZE,
-                                 ships::PATROL_BOAT_SIZE};
+    int shipSizes[SHIP_TYPES] = {Ships::CARRIER_SIZE, Ships::BATTLESHIP_SIZE,
+                                 Ships::DESTROYER_SIZE, Ships::SUBMARINE_SIZE,
+                                 Ships::PATROL_BOAT_SIZE};
     int occupableTiles = 0;
     for (int i = 0; i < SHIP_TYPES; ++i) {
         occupableTiles += shipSizes[i] * NUM_EACH_TYPE[i];
@@ -46,19 +46,19 @@ void player::initializeShips() {
         for (int j = 0; j < NUM_EACH_TYPE[i]; ++j) {
             switch (i) {
             case 0:
-                this->ships[shipInitializer] = new ships::carrier;
+                this->ships[shipInitializer] = new Ships::carrier;
                 break;
             case 1:
-                this->ships[shipInitializer] = new ships::battleship;
+                this->ships[shipInitializer] = new Ships::battleship;
                 break;
             case 2:
-                this->ships[shipInitializer] = new ships::destroyer;
+                this->ships[shipInitializer] = new Ships::destroyer;
                 break;
             case 3:
-                this->ships[shipInitializer] = new ships::submarine;
+                this->ships[shipInitializer] = new Ships::submarine;
                 break;
             case 4:
-                this->ships[shipInitializer] = new ships::patrolBoat;
+                this->ships[shipInitializer] = new Ships::patrolBoat;
                 break;
             default:
                 std::cerr
@@ -69,14 +69,14 @@ void player::initializeShips() {
     }
     assert(shipInitializer == TOTAL_SHIPS);
 }
-bool player::isOutOfBounds(const ships::ship &ship,
+bool player::isOutOfBounds(const Ships::ship &ship,
                            const std::pair<uint, uint> &pos) const {
     return ((ship.getDirection() && ship.getSize() + pos.second > ROWS) ||
             (!ship.getDirection() && ship.getSize() + pos.first > COLS));
 }
-bool player::isOverlaping(const ships::ship &ship,
+bool player::isOverlaping(const Ships::ship &ship,
                           const std::pair<uint, uint> &position) const {
-    ships::ship testShip = ship;
+    Ships::ship testShip = ship;
     testShip.setCells(position);
     std::vector<std::pair<uint, uint>> positionCandidate =
         testShip.getLocation();
@@ -88,7 +88,7 @@ bool player::isOverlaping(const ships::ship &ship,
     }
     return 0;
 }
-void player::insertShipInGrid(const ships::ship &ship) {
+void player::insertShipInGrid(const Ships::ship &ship) {
     std::vector<std::pair<uint, uint>> shipPos = ship.getLocation();
     char shipName = ship.getName()[0];
     for (unsigned k = 0; k < shipPos.size(); ++k) {

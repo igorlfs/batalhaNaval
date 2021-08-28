@@ -4,7 +4,7 @@
 #include <string>
 #include <utility>
 #include <vector>
-namespace ships {
+namespace Ships {
 class ship {
   protected:
     int size;
@@ -41,6 +41,6 @@ class ship {
     }
     void wasDestroyed();
 };
-} // namespace ships
+} // namespace Ships
 
 #endif
