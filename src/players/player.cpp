@@ -73,7 +73,7 @@ bool player::isOverlaping(const Ships::ship &ship,
     testShip.setCells(position);
     std::vector<std::pair<uint, uint>> positionCandidate =
         testShip.getLocation();
-    for (unsigned k = 0; k < positionCandidate.size(); ++k) {
+    for (uint k = 0; k < positionCandidate.size(); ++k) {
         if (this->grid[positionCandidate[k].first]
                       [positionCandidate[k].second] != EMPTY) {
             return true;
@@ -89,9 +89,7 @@ void player::insertShipInGrid(const Ships::ship &ship) {
     }
 }
 player::~player() {
-    for (int i = 0; i < TOTAL_SHIPS; ++i) {
-        delete ships[i];
-    }
+    for (int i = 0; i < TOTAL_SHIPS; ++i) delete ships[i];
 }
 void player::printHeader() const {
     for (int i = 0; i < COLS + 1; ++i) {
@@ -129,7 +127,7 @@ void player::takeDamage(const std::pair<uint, uint> &attack) {
             if (location[k] == attack) {
                 this->alreadyDamaged.insert(attack);
                 this->ships[i]->bombCell(attack);
-                this->ships[i]->wasDestroyed();
+                this->ships[i]->destroyShip();
             }
         }
     }

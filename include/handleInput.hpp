@@ -1,7 +1,5 @@
 #ifndef HANDLE_INPUT_H
 #define HANDLE_INPUT_H
-#include <iostream>
-#include <regex>
 #include <string>
 namespace Input {
 struct interrupt {};

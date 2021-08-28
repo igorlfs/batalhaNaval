@@ -14,7 +14,6 @@ void waitForEnter();
 int main() {
     // TODO:
     //
-    // Fix magic chars/numbers
     // Drop inheritance
     // Improve docs; maybe test?
     // Explain how to play the game

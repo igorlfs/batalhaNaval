@@ -5,6 +5,7 @@
 #include <utility>
 #include <vector>
 namespace Ships {
+static constexpr char directions[2] = {'v', 'h'};
 class ship {
   protected:
     int size;
@@ -22,24 +23,28 @@ class ship {
     // Getters
     int getSize() const { return this->size; }
     std::string getName() const { return this->name; }
-    std::vector<std::pair<uint, uint>> getLocation() const;
+    // Return 'true' if bombed, 'false' otherwise
     bool getState() const { return this->isDestroyed; }
-    // return 'true' for horizontal, 'false' for vertical
+    // Return 'true' for horizontal, 'false' for vertical
     bool getDirection() const { return this->direction; }
+    // Return a vector containing the positions of each cell
+    std::vector<std::pair<uint, uint>> getLocation() const;
 
     // Setters
-    // Human based method to set a direction
-    void setDirection(const char &direction);
     // Non-Human based method to set a direction
     void setDirection(const bool &direction) { this->direction = direction; }
+    // Human based method to set a direction
+    void setDirection(const char &direction);
     // Initialize cells as non-bombed
     void setCells(const std::pair<uint, uint> &position);
 
+    // Modifiers
     void clearCells() { this->cells.clear(); }
     void bombCell(const std::pair<uint, uint> position) {
         this->cells[{position.first, position.second}] = 1;
     }
-    void wasDestroyed();
+    // Destroys a ship; Also displays a message warning the players
+    void destroyShip();
 };
 } // namespace Ships
 

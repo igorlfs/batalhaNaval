@@ -14,7 +14,7 @@ human::human() {
         this->ships[i]->setCells(chooseShipPosition(*this->ships[i]));
         this->insertShipInGrid(*this->ships[i]);
         /* this->printGrid(); */
-        /* std::cout<<"Você está feliz com a posição atual do barco? (S/n)\n" */
+        /* std::cout<<"Você está feliz com a posição atual do navio? (S/n)\n" */
         /*            "Digite 'n' para selecionar uma nova orientação/posição:
          * "; */
         /* char changePos; */
@@ -66,7 +66,8 @@ insertAgain:
             throw Input::invalidDirectionFormat{readLine};
         std::stringstream ss(readLine);
         ss >> direction;
-        if (direction != 'v' && direction != 'h')
+        if (direction != Ships::directions[0] &&
+            direction != Ships::directions[1])
             throw Input::invalidDirection{readLine};
         return direction;
     } catch (Input::interrupt e) {
@@ -78,16 +79,21 @@ insertAgain:
         goto insertAgain;
     } catch (Input::invalidDirectionFormat e) {
         std::cout << "\nEntrada inválida: " << e.str
-                  << "\nPor favor, insira a direção no seguinte formato: x\n"
-                     "onde 'x' deve ser v ou h\n\n";
+                  << "\nA direção deve ser uma letra minúscula, a inicial da "
+                     "direção desejada\n\n";
         goto insertAgain;
     } catch (Input::invalidDirection e) {
         std::cout << "\nEntrada inválida: " << e.str
-                  << "\nVocê só pode escolher entre as direções 'v' e 'h'\n\n";
+                  << "\nVocê só pode escolher entre as direções vertical e "
+                     "horizontal\n\n";
         goto insertAgain;
     }
 }
-uint parseLetter(const char letter) { return (uint)letter - 65; }
+uint parseLetter(const char letter) {
+    // Subtract 65 from a letter to create the following map
+    // A -> 0; B -> 1; C -> 2 ...
+    return (uint)letter - 65;
+}
 std::pair<uint, uint> getPosition() {
 insertPositionAgain:
     try {
