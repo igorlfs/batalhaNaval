@@ -3,18 +3,28 @@
 #include "human.hpp"
 #include "input.hpp"
 #include <iostream>
-// Remove these functions from main and implement them as member functions
 void printTrackingGrid(const Players::player &tracked,
                        const Players::player &traking);
-// Might wanna find a hacky way to merge this function with
-// printContructionGrid()
 void printPrimaryGrid(const Players::player &defender,
                       const Players::player &enemy);
 void waitForEnter();
+void welcome() {
+    std::cout
+        << "Olá, jogador!\n"
+        << "Nessa implementação do Batalha Naval, você enfrenta o computador!\n"
+        << "Não se preocupe, ele não é um oponenete muito sagaz!\n\n"
+        << "O jogo é dividido em duas etapas:\n"
+        << "1) Colocar seus navios no SEU campo.\n"
+        << "(você escolhe uma direção e uma posição onde ficará a cabeça)\n"
+        << "2) Escolher posições para tentar destruir os navios inimigos.\n\n"
+        << "O seu oponente terá as mesmas tarefas que você.\n"
+        << "Quando ele te atacar, você vai acompanhar o estado do seu campo!\n"
+        << "Tudo certo?\n";
+}
 int main() {
-    // TODO:
-    // Explain how to play the game
-    // Maybe test?
+    // TODO: tests?
+    welcome();
+    waitForEnter();
     Players::human person;
     Players::computer cpu;
     for (int i = 0; i < Players::TILES; ++i) {
