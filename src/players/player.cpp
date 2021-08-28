@@ -23,18 +23,11 @@ bool player::isThereEnoughSpace() const {
     // those asterisks. This problem sounds really complex to solve
     // analitically, so instead, we do not allow occupableTiles ~ TILES and use
     // an aproximation.
-    if (occupableTiles <= MAX_OCCUPABLE * TILES) {
-        return 1;
-    } else {
-        return 0;
-    }
+    return (occupableTiles <= MAX_OCCUPABLE * TILES);
 }
 void player::initializeGrid() {
-    for (int i = 0; i < ROWS; ++i) {
-        for (int j = 0; j < COLS; ++j) {
-            this->grid[i][j] = EMPTY;
-        }
-    }
+    for (int i = 0; i < ROWS; ++i)
+        for (int j = 0; j < COLS; ++j) this->grid[i][j] = EMPTY;
 }
 void player::initializeShips() {
     int sumEachShip = 0;
@@ -83,10 +76,10 @@ bool player::isOverlaping(const Ships::ship &ship,
     for (unsigned k = 0; k < positionCandidate.size(); ++k) {
         if (this->grid[positionCandidate[k].first]
                       [positionCandidate[k].second] != EMPTY) {
-            return 1;
+            return true;
         }
     }
-    return 0;
+    return false;
 }
 void player::insertShipInGrid(const Ships::ship &ship) {
     std::vector<std::pair<uint, uint>> shipPos = ship.getLocation();
@@ -143,8 +136,7 @@ void player::takeDamage(const std::pair<uint, uint> &attack) {
 }
 bool player::isDead() const {
     uint lostShips = 0;
-    for (uint i = 0; i < TOTAL_SHIPS; ++i) {
+    for (uint i = 0; i < TOTAL_SHIPS; ++i)
         if (this->ships[i]->getState()) lostShips++;
-    }
     return (lostShips == TOTAL_SHIPS);
 }

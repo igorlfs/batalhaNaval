@@ -8,20 +8,16 @@ void ship::setDirection(const char &direction) {
 }
 void ship::setCells(const std::pair<uint, uint> &position) {
     if (this->direction) {
-        for (int i = 0; i < this->size; ++i) {
+        for (int i = 0; i < this->size; ++i)
             this->cells[{position.first, position.second + i}] = 0;
-        }
     } else {
-        for (int i = 0; i < this->size; ++i) {
+        for (int i = 0; i < this->size; ++i)
             this->cells[{position.first + i, position.second}] = 0;
-        }
     }
 }
 std::vector<std::pair<uint, uint>> ship::getLocation() const {
     std::vector<std::pair<uint, uint>> location;
-    for (auto const &i : this->cells) {
-        location.push_back(i.first);
-    }
+    for (auto const &i : this->cells) location.push_back(i.first);
     return location;
 }
 void ship::wasDestroyed() {

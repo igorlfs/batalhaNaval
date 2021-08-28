@@ -5,7 +5,7 @@
 namespace Color {
 // "Abbreviate" reseting attributes
 static const std::string RESET = "\e[0m";
-enum Code {
+enum Codes {
     FG_BLACK = 30,
     FG_RED = 31,
     FG_GREEN = 32,
@@ -19,10 +19,10 @@ enum Code {
     FG_WHITE = 97,
 };
 class Modifier {
-    Code code;
+    Codes code;
 
   public:
-    Modifier(Code pCode) : code(pCode) {}
+    Modifier(Codes pCode) : code(pCode) {}
     friend std::ostream &operator<<(std::ostream &os, const Modifier &mod) {
         return os << "\033[" << mod.code << "m";
     }

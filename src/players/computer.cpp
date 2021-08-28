@@ -1,7 +1,7 @@
 #include "computer.hpp"
 #include <iostream>
 #include <random>
-// https://stackoverflow.com/questions/13445688/how-to-generate-a-random-number-in-c
+// https://stackoverflow.com/a/13445752
 int randomNumberGenerator(int floor, int ceiling) {
     std::random_device dev;
     std::mt19937 rng(dev());

@@ -4,7 +4,6 @@
 #include <regex>
 #include <string>
 namespace Input {
-// regex: a letter between an arbitraty number of spaces
 struct interrupt {};
 struct emptyLine {};
 struct invalidDirectionFormat {

@@ -14,7 +14,8 @@ void waitForEnter();
 int main() {
     // TODO:
     //
-    // Fix magic chars/numbers; use true/false insted of 1/0;
+    // Fix magic chars/numbers
+    // Drop inheritance
     // Improve docs; maybe test?
     // Explain how to play the game
     Players::human person;
