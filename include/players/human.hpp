@@ -8,8 +8,7 @@ class human : public player {
     void printContructionGrid() const;
 
     char chooseDirection(const Ships::ship &ship) const;
-    std::pair<uint, uint>
-    chooseShipPosition(const Ships::ship &ship) const override;
+    pair<uint, uint> chooseShipPosition(const Ships::ship &ship) const override;
 
     // Remove ship if user wants to relocate it
     void removeShipFromGrid(Ships::ship *ship);
@@ -17,7 +16,7 @@ class human : public player {
   public:
     human();
 
-    std::pair<uint, uint> chooseAttackPosition() override;
+    pair<uint, uint> chooseAttackPosition() override;
 };
 } // namespace Players
 #endif

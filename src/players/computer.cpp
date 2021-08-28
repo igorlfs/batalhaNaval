@@ -20,9 +20,8 @@ computer::computer() {
     }
 }
 bool computer::chooseDirection() const { return randomNumberGenerator(0, 1); }
-std::pair<uint, uint>
-computer::chooseShipPosition(const Ships::ship &ship) const {
-    std::pair<uint, uint> position;
+pair<uint, uint> computer::chooseShipPosition(const Ships::ship &ship) const {
+    pair<uint, uint> position;
     do {
         position = {randomNumberGenerator(0, ROWS - 1),
                     randomNumberGenerator(0, COLS - 1)};
@@ -30,8 +29,8 @@ computer::chooseShipPosition(const Ships::ship &ship) const {
              this->isOverlaping(ship, position) == true);
     return position;
 }
-std::pair<uint, uint> computer::chooseAttackPosition() {
-    std::pair<uint, uint> attackPosition;
+pair<uint, uint> computer::chooseAttackPosition() {
+    pair<uint, uint> attackPosition;
     do {
         attackPosition = {randomNumberGenerator(0, ROWS - 1),
                           randomNumberGenerator(0, COLS - 1)};

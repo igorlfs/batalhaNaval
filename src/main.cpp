@@ -1,7 +1,7 @@
-#include "colors.hpp"
+#include "color.hpp"
 #include "computer.hpp"
-#include "handleInput.hpp"
 #include "human.hpp"
+#include "input.hpp"
 #include <iostream>
 // Remove these functions from main and implement them as member functions
 void printTrackingGrid(const Players::player &tracked,
@@ -13,10 +13,8 @@ void printPrimaryGrid(const Players::player &defender,
 void waitForEnter();
 int main() {
     // TODO:
-    //
-    // Drop inheritance
-    // Improve docs; maybe test?
     // Explain how to play the game
+    // Maybe test?
     Players::human person;
     Players::computer cpu;
     for (int i = 0; i < Players::TILES; ++i) {

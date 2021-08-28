@@ -1,5 +1,5 @@
 #include "player.hpp"
-#include "colors.hpp"
+#include "color.hpp"
 #include <assert.h>
 #include <iostream>
 using namespace Players;
@@ -63,16 +63,15 @@ void player::initializeShips() {
     assert(shipInitializer == TOTAL_SHIPS);
 }
 bool player::isOutOfBounds(const Ships::ship &ship,
-                           const std::pair<uint, uint> &pos) const {
+                           const pair<uint, uint> &pos) const {
     return ((ship.getDirection() && ship.getSize() + pos.second > ROWS) ||
             (!ship.getDirection() && ship.getSize() + pos.first > COLS));
 }
 bool player::isOverlaping(const Ships::ship &ship,
-                          const std::pair<uint, uint> &position) const {
+                          const pair<uint, uint> &position) const {
     Ships::ship testShip = ship;
     testShip.setCells(position);
-    std::vector<std::pair<uint, uint>> positionCandidate =
-        testShip.getLocation();
+    std::vector<pair<uint, uint>> positionCandidate = testShip.getLocation();
     for (uint k = 0; k < positionCandidate.size(); ++k) {
         if (this->grid[positionCandidate[k].first]
                       [positionCandidate[k].second] != EMPTY) {
@@ -82,7 +81,7 @@ bool player::isOverlaping(const Ships::ship &ship,
     return false;
 }
 void player::insertShipInGrid(const Ships::ship &ship) {
-    std::vector<std::pair<uint, uint>> shipPos = ship.getLocation();
+    std::vector<pair<uint, uint>> shipPos = ship.getLocation();
     char shipName = ship.getName()[0];
     for (unsigned k = 0; k < shipPos.size(); ++k) {
         this->grid[shipPos[k].first][shipPos[k].second] = shipName;
@@ -112,17 +111,16 @@ void player::printSeparator() const {
     }
     std::cout.put('\n');
 }
-bool player::wasAttacked(const std::pair<uint, uint> &position) const {
+bool player::wasAttacked(const pair<uint, uint> &position) const {
     return (this->alreadyAttacked.find(position) !=
             this->alreadyAttacked.end());
 }
-bool player::wasDamaged(const std::pair<uint, uint> &position) const {
+bool player::wasDamaged(const pair<uint, uint> &position) const {
     return (this->alreadyDamaged.find(position) != this->alreadyDamaged.end());
 }
-void player::takeDamage(const std::pair<uint, uint> &attack) {
+void player::takeDamage(const pair<uint, uint> &attack) {
     for (uint i = 0; i < TOTAL_SHIPS; ++i) {
-        std::vector<std::pair<uint, uint>> location =
-            this->ships[i]->getLocation();
+        std::vector<pair<uint, uint>> location = this->ships[i]->getLocation();
         for (uint k = 0; k < this->ships[i]->getSize(); ++k) {
             if (location[k] == attack) {
                 this->alreadyDamaged.insert(attack);

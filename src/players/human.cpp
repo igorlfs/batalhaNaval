@@ -1,6 +1,6 @@
 #include "human.hpp"
-#include "colors.hpp"
-#include "handleInput.hpp"
+#include "color.hpp"
+#include "input.hpp"
 #include <iostream>
 #include <regex>
 using namespace Players;
@@ -8,21 +8,10 @@ human::human() {
     this->initializeGrid();
     this->initializeShips();
     for (int i = 0; i < TOTAL_SHIPS; ++i) {
-        /* restartPosition: */
         this->printContructionGrid();
         this->ships[i]->setDirection(chooseDirection(*this->ships[i]));
         this->ships[i]->setCells(chooseShipPosition(*this->ships[i]));
         this->insertShipInGrid(*this->ships[i]);
-        /* this->printGrid(); */
-        /* std::cout<<"Você está feliz com a posição atual do navio? (S/n)\n" */
-        /*            "Digite 'n' para selecionar uma nova orientação/posição:
-         * "; */
-        /* char changePos; */
-        /* std::cin >> changePos; */
-        /* if (changePos == 'n') { */
-        /*   this->clearShip(this->ships[i]); */
-        /*   goto restartPosition; */
-        /* } */
     }
 }
 void human::printContructionGrid() const {
@@ -94,7 +83,7 @@ uint parseLetter(const char letter) {
     // A -> 0; B -> 1; C -> 2 ...
     return (uint)letter - 65;
 }
-std::pair<uint, uint> getPosition() {
+pair<uint, uint> getPosition() {
 insertPositionAgain:
     try {
         std::regex expectedFormat("[A-Z][1-9][0-9]*");
@@ -122,7 +111,7 @@ insertPositionAgain:
         goto insertPositionAgain;
     }
 }
-std::pair<uint, uint> human::chooseShipPosition(const Ships::ship &ship) const {
+pair<uint, uint> human::chooseShipPosition(const Ships::ship &ship) const {
     std::cout << "Escolha a posição de " << ship.getName()
               << "\nTamanho: " << ship.getSize()
               << "\nUma posição válida é composta por uma letra MAIÚSCULA e um "
@@ -132,7 +121,7 @@ std::pair<uint, uint> human::chooseShipPosition(const Ships::ship &ship) const {
                  "Exemplos de posições válidas são: A2, C5, D4\n";
 insertAgain:
     try {
-        std::pair<uint, uint> position = getPosition();
+        pair<uint, uint> position = getPosition();
         if (isOutOfBounds(ship, position)) throw Input::shipOutOfBounds();
         if (isOverlaping(ship, position)) throw Input::shipOverlap();
         return position;
@@ -147,17 +136,17 @@ insertAgain:
     }
 }
 void human::removeShipFromGrid(Ships::ship *ship) {
-    std::vector<std::pair<uint, uint>> shipPos = ship->getLocation();
+    std::vector<pair<uint, uint>> shipPos = ship->getLocation();
     for (unsigned k = 0; k < shipPos.size(); ++k) {
         this->grid[shipPos[k].first][shipPos[k].second] = EMPTY;
     }
     ship->clearCells();
 }
-std::pair<uint, uint> human::chooseAttackPosition() {
+pair<uint, uint> human::chooseAttackPosition() {
     std::cout << "\nEscolha em qual posição deseja atacar: ";
 insertAgain:
     try {
-        std::pair<uint, uint> position = getPosition();
+        pair<uint, uint> position = getPosition();
         if (position.first >= ROWS || position.second >= COLS)
             throw Input::attackOutOfBounds();
         if (this->alreadyAttacked.find(position) != this->alreadyAttacked.end())
