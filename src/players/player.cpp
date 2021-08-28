@@ -21,8 +21,8 @@ bool player::isThereEnoughSpace() const {
     //
     // It's impossible to fit a ship (whose size is greater than 1) in between
     // those asterisks. This problem sounds really complex to solve
-    // analitically, so instead, we do not allow occupableTiles ~ TILES and use
-    // an aproximation.
+    // analytically, so instead, we do not allow occupableTiles ~ TILES and use
+    // an approximation.
     return (occupableTiles <= MAX_OCCUPABLE * TILES);
 }
 void player::initializeGrid() {
