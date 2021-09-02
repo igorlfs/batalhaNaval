@@ -32,7 +32,7 @@ class player {
   protected:
     static constexpr int TOTAL_SHIPS = 6;
 
-    Ships::ship *ships[TOTAL_SHIPS];
+    std::unique_ptr<Ships::ship> ships[TOTAL_SHIPS];
     // Tracks attack positions already atttempted
     // eases the implementation of wasAttacked()
     std::set<pair<uint, uint>> alreadyAttacked;

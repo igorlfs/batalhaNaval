@@ -40,7 +40,7 @@ void human::printContructionGrid() const {
 char human::chooseDirection(const Ships::ship &ship) const {
 insertAgain:
     try {
-        // regex: a letter between an arbitraty number of spaces
+        // regex: a letter between an arbitrary number of spaces
         std::regex expectedFormat("\\s*\\w\\s*");
         char direction;
         std::string readLine;
