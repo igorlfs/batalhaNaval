@@ -5,6 +5,7 @@
 #include "destroyer.hpp"
 #include "patrolBoat.hpp"
 #include "submarine.hpp"
+#include <memory>
 #include <set>
 #include <string>
 namespace Players {
@@ -52,8 +53,6 @@ class player {
                       const pair<uint, uint> &pos) const;
 
     void insertShipInGrid(const Ships::ship &ship);
-
-    virtual ~player();
 
   public:
     char grid[ROWS][COLS]; // TODO: should use getters instead of being a public

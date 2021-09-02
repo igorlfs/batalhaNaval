@@ -39,19 +39,24 @@ void player::initializeShips() {
         for (int j = 0; j < NUM_EACH_TYPE[i]; ++j) {
             switch (i) {
             case 0:
-                this->ships[shipInitializer] = new Ships::carrier;
+                this->ships[shipInitializer] =
+                    std::make_unique<Ships::carrier>();
                 break;
             case 1:
-                this->ships[shipInitializer] = new Ships::battleship;
+                this->ships[shipInitializer] =
+                    std::make_unique<Ships::battleship>();
                 break;
             case 2:
-                this->ships[shipInitializer] = new Ships::destroyer;
+                this->ships[shipInitializer] =
+                    std::make_unique<Ships::destroyer>();
                 break;
             case 3:
-                this->ships[shipInitializer] = new Ships::submarine;
+                this->ships[shipInitializer] =
+                    std::make_unique<Ships::submarine>();
                 break;
             case 4:
-                this->ships[shipInitializer] = new Ships::patrolBoat;
+                this->ships[shipInitializer] =
+                    std::make_unique<Ships::patrolBoat>();
                 break;
             default:
                 std::cerr
@@ -86,9 +91,6 @@ void player::insertShipInGrid(const Ships::ship &ship) {
     for (unsigned k = 0; k < shipPos.size(); ++k) {
         this->grid[shipPos[k].first][shipPos[k].second] = shipName;
     }
-}
-player::~player() {
-    for (int i = 0; i < TOTAL_SHIPS; ++i) delete ships[i];
 }
 void player::printHeader() const {
     for (int i = 0; i < COLS + 1; ++i) {
