@@ -2,7 +2,7 @@
 #include <iostream>
 #include <random>
 // https://stackoverflow.com/a/13445752
-int randomNumberGenerator(int floor, int ceiling) {
+int randomNumber(int floor, int ceiling) {
     std::random_device dev;
     std::mt19937 rng(dev());
     std::uniform_int_distribution<std::mt19937::result_type> dist(floor,
@@ -19,12 +19,11 @@ computer::computer() {
         this->insertShipInGrid(*this->ships[i]);
     }
 }
-bool computer::chooseDirection() const { return randomNumberGenerator(0, 1); }
+bool computer::chooseDirection() const { return randomNumber(0, 1); }
 pair<uint, uint> computer::chooseShipPosition(const Ships::ship &ship) const {
     pair<uint, uint> position;
     do {
-        position = {randomNumberGenerator(0, ROWS - 1),
-                    randomNumberGenerator(0, COLS - 1)};
+        position = {randomNumber(0, ROWS - 1), randomNumber(0, COLS - 1)};
     } while (this->isOutOfBounds(ship, position) == true ||
              this->isOverlaping(ship, position) == true);
     return position;
@@ -32,8 +31,7 @@ pair<uint, uint> computer::chooseShipPosition(const Ships::ship &ship) const {
 pair<uint, uint> computer::chooseAttackPosition() {
     pair<uint, uint> attackPosition;
     do {
-        attackPosition = {randomNumberGenerator(0, ROWS - 1),
-                          randomNumberGenerator(0, COLS - 1)};
+        attackPosition = {randomNumber(0, ROWS - 1), randomNumber(0, COLS - 1)};
     } while (this->wasAttacked(attackPosition) == true);
     this->alreadyAttacked.insert(attackPosition);
     return attackPosition;
