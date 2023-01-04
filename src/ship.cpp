@@ -1,4 +1,4 @@
-#include "ship.hpp"
+#include "ships/ship.hpp"
 #include <assert.h>
 #include <iostream>
 using namespace Ships;

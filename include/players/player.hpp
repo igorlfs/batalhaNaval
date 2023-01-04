@@ -1,10 +1,10 @@
 #ifndef PLAYER_H
 #define PLAYER_H
-#include "battleship.hpp"
-#include "carrier.hpp"
-#include "destroyer.hpp"
-#include "patrolBoat.hpp"
-#include "submarine.hpp"
+#include "ships/battleship.hpp"
+#include "ships/carrier.hpp"
+#include "ships/destroyer.hpp"
+#include "ships/patrolBoat.hpp"
+#include "ships/submarine.hpp"
 #include <memory>
 #include <set>
 #include <string>

@@ -1,7 +1,7 @@
 #include "color.hpp"
-#include "computer.hpp"
-#include "human.hpp"
 #include "input.hpp"
+#include "players/computer.hpp"
+#include "players/human.hpp"
 #include <iostream>
 void printTrackingGrid(const Players::player &tracked,
                        const Players::player &traking);

@@ -1,2 +1,4 @@
-/build/
-/.cache/
+binary
+.cache/
+obj/
+compile_commands.json

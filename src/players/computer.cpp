@@ -1,4 +1,4 @@
-#include "computer.hpp"
+#include "players/computer.hpp"
 #include <iostream>
 #include <random>
 // https://stackoverflow.com/a/13445752

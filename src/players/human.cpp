@@ -1,4 +1,4 @@
-#include "human.hpp"
+#include "players/human.hpp"
 #include "color.hpp"
 #include "input.hpp"
 #include <iostream>

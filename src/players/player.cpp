@@ -1,4 +1,4 @@
-#include "player.hpp"
+#include "players/player.hpp"
 #include "color.hpp"
 #include <assert.h>
 #include <iostream>
